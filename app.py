@@ -11,6 +11,10 @@ def home():
 def concept():
     return render_template("concept.html")
 
+@app.route("/types")
+def types():
+    return render_template("types.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

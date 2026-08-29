@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Types of Machine Learning</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: linear-gradient(135deg, #101827, #1e3a5f);
+            min-height: 100vh;
+        }
+
+        .header {
+            padding: 50px 20px;
+            text-align: center;
+            color: white;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: bold;
+        }
+
+        .type-card {
+            height: 100%;
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+
+        .type-card:hover {
+            transform: translateY(-8px);
+        }
+
+        .card-header {
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .supervised {
+            background: #2563eb;
+        }
+
+        .unsupervised {
+            background: #059669;
+        }
+
+        .reinforcement {
+            background: #7c3aed;
+        }
+
+        .example {
+            background: #f1f5f9;
+            border-radius: 10px;
+            padding: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <div class="container">
+            <span class="badge bg-primary mb-3">MACHINE LEARNING</span>
+
+            <h1>Types of Machine Learning</h1>
+
+            <p>
+                Machine Learning can be divided into different types
+                depending on how a system learns from data.
+            </p>
+        </div>
+    </header>
+
+    <main class="container">
+
+        <div class="row g-4">
+
+            <!-- Supervised Learning -->
+            <div class="col-md-4">
+                <div class="card type-card shadow">
+
+                    <div class="card-header supervised">
+                        <h2>🎯 Supervised Learning</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>What is it?</h5>
+
+                        <p>
+                            The model learns from labeled data where
+                            the correct answer is already known.
+                        </p>
+
+                        <h5>Characteristics</h5>
+
+                        <ul>
+                            <li>Uses labeled data.</li>
+                            <li>Learns from examples.</li>
+                            <li>Makes predictions.</li>
+                        </ul>
+
+                        <div class="example">
+                            <strong>Example:</strong>
+                            <p class="mb-0">
+                                Predicting house prices using size
+                                and location.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Unsupervised Learning -->
+            <div class="col-md-4">
+                <div class="card type-card shadow">
+
+                    <div class="card-header unsupervised">
+                        <h2>🔍 Unsupervised Learning</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>What is it?</h5>
+
+                        <p>
+                            The model works with unlabeled data and
+                            discovers patterns or groups.
+                        </p>
+
+                        <h5>Characteristics</h5>
+
+                        <ul>
+                            <li>Uses unlabeled data.</li>
+                            <li>Finds hidden patterns.</li>
+                            <li>Groups similar information.</li>
+                        </ul>
+
+                        <div class="example">
+                            <strong>Example:</strong>
+                            <p class="mb-0">
+                                Grouping customers according to
+                                their shopping habits.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Reinforcement Learning -->
+            <div class="col-md-4">
+                <div class="card type-card shadow">
+
+                    <div class="card-header reinforcement">
+                        <h2>🤖 Reinforcement Learning</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <h5>What is it?</h5>
+
+                        <p>
+                            An agent learns by interacting with an
+                            environment and receiving rewards or penalties.
+                        </p>
+
+                        <h5>Characteristics</h5>
+
+                        <ul>
+                            <li>Learns through experience.</li>
+                            <li>Uses rewards and penalties.</li>
+                            <li>Improves decisions.</li>
+                        </ul>
+
+                        <div class="example">
+                            <strong>Example:</strong>
+                            <p class="mb-0">
+                                A robot learning how to reach
+                                a destination.
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="text-center my-5">
+            <a href="/" class="btn btn-light btn-lg">
+                ← Back to Home
+            </a>
+        </div>
+
+    </main>
+
+</body>
+</html>
