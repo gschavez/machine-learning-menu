@@ -19,6 +19,14 @@ def types():
 def linear_regression_concepts():
     return render_template("linear-regression-concepts.html")
 
+@app.route("/use-cases")
+def use_cases():
+    return render_template("use-cases.html")
+
+@app.route("/useCases/usecase1")
+def usecase1():
+    return render_template("usecase1.html")
+
 @app.route("/useCases/usecase2")
 def usecase2():
     return render_template("usecase2.html")
