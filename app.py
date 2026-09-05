@@ -23,6 +23,10 @@ def linear_regression_concepts():
 def use_cases():
     return render_template("use-cases.html")
 
+@app.route("/useCases/usecase1")
+def usecase1():
+    return render_template("usecase1.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
