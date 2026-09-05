@@ -27,6 +27,10 @@ def use_cases():
 def usecase1():
     return render_template("usecase1.html")
 
+@app.route("/useCases/usecase2")
+def usecase2():
+    return render_template("usecase2.html")
+
 
 if __name__ == "__main__":
     app.run(debug=True)
