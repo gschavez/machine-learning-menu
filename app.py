@@ -24,7 +24,7 @@ def linear_regression_concepts():
 def usecase2():
     return render_template("usecase2.html")
 
-@app.route("/linearRegression/application", methods = ["GET, POST"])
+@app.route("/linearRegression/application", methods = ["GET", "POST"])
 def linear_regression_application():
     prediction = None
     error = None
@@ -39,7 +39,7 @@ def linear_regression_application():
         else:
             try:
                 distance = float(value)
-                prediction = taxi_model_calculate_cost(distance)
+                prediction = taxi_model.calculate_cost(distance)
             except ValueError:
                 error = "Please enter a valid numeric value."
 

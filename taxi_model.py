@@ -10,6 +10,9 @@ df = pd.read_csv("data/taxi_data.csv")
 x = df[["distance_km"]]
 y = df[["cost"]]
 
+model = LinearRegression()
+model.fit(x, y)
+
 def calculate_cost(distance):
     result = model.predict([[distance]])[0][0]
     return round (result,2)
@@ -20,9 +23,9 @@ def get_num_records():
 def generate_plot():
     fig, ax = plt.subplots(figsize =(7,5))
     ax.scatter(df["distance_km"], df["cost"], alpha = 0.5, label = "Data" )
-    ax.plot(df["distance_km"], model.predict(x), color = "red", linewith =2, label = "Regression line")
-    ax.set_tittle("Taxi Fare vs Distance")
-    ax.set_xlable("Distance (km)")
+    ax.plot(df["distance_km"], model.predict(x), color="red", linewidth=2, label="Regression line")
+    ax.set_title("Taxi Fare vs Distance")
+    ax.set_xlabel("Distance (km)")
     ax.set_ylabel("Cost ($)")
     ax.legend()
 
