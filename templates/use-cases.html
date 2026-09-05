@@ -3,25 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Use Cases</title>
 
-    <tile>Machine Learning - Use Cases</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
-    <!-- Bootstrap CSS-->>
-     <link
-     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-     rel="stylesheet">
-
-     <!--Bootstrap Icons-->>
-     <link
-     href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css"
-     rel="stylesheet">
-
-     <!--Fonts-->>
-     <link
-     href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wgth@400;500&family=jetBrains+Mono:wght@500&display=swap"
-     rel="stylesheet">
-
-     <style>
+    <style>
         :root {
             --bg-deep: #0f172a;
             --grad-1: #0f2027;
@@ -38,9 +26,9 @@
             --font-mono: 'JetBrains Mono', monospace;
         }
 
-        body{
+        body {
             margin: 0;
-            background: #102a43;
+            background: var(--bg-deep);
             color: var(--text-primary);
             font-family: var(--font-body);
         }
@@ -49,26 +37,13 @@
             font-family: var(--font-display);
         }
 
-        a:focus-visible,
-        button:focus-visible {
-            outline: 2px solid var(--accent-cyan);
-            outline-offset: 3px;
+        .ml-hero {
+            background: linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
+            padding: 100px 20px 90px;
+            text-align: center;
         }
 
-        /* Hero */
-        .ml-hero{
-            position: relative;
-            overflow: hidden;
-            bacground: linear-gradient(
-                135deg, 
-                var(--grad-1), 
-                var(--grad-2), 
-                var(--grad-3));
-                padding: 90px 20px;
-                text-align: center;
-        }
-
-        .ml-eyebrow{
+        .ml-eyebrow {
             font-family: var(--font-mono);
             font-size: 0.8rem;
             letter-spacing: 0.2em;
@@ -76,38 +51,19 @@
             text-transform: uppercase;
         }
 
-        .ml-hero__title{
+        .ml-hero__title {
             font-weight: 700;
             font-size: clamp(2.5rem, 6vw, 4rem);
             margin: 12px 0 16px;
         }
 
-        .ml-hero__subtitle{
+        .ml-hero__subtitle {
             color: var(--text-muted);
-            max-width: 700px;
+            max-width: 640px;
             margin: 0 auto;
-            font-size: 1.1rem;
+            font-size: 1.15rem;
         }
 
-        /* Main cards */
-        .ml-card{
-            background: var(--surface-solid);
-            border: 1px solid #ffffff14;
-            border-radius: 18px;
-        }
-
-        .ml-card h2 {
-            color: var(--accent-cyan);
-            font-size: 1.6rem;
-            font-weight: 700;
-        }
-
-        .ml-card p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-         /* Information cards */
         .ml-feature {
             background: var(--surface);
             border: 1px solid #ffffff14;
@@ -123,46 +79,30 @@
         }
 
         .ml-feature i {
-            font-size: 1.8rem;
+            font-size: 2rem;
             color: var(--accent-cyan);
             margin-bottom: 12px;
             display: block;
         }
 
         .ml-feature h4 {
-            font-size: 1.05rem;
-            margin-bottom: 8px;
+            margin-bottom: 15px;
         }
 
-        .ml-feature p {
-            color: var(--text-muted);
-            font-size: 0.92rem;
-            margin: 0;
+        .btn-outline-info {
+            border-color: var(--accent-cyan);
+            color: var(--accent-cyan);
         }
 
-        /* Tags */
-        .ml-chip {
-            font-family: var(--font-mono);
-            font-size: 0.85rem;
-            color: var(--accent-violet);
-            background: #a78bfa1a;
-            border: 1px solid #a78bfa44;
-            border-radius: 999px;
-            padding: 8px 18px;
-            display: inline-block;
-            margin: 6px;
-        }
-
-        .ml-section-title {
-            text-align: center;
-            font-weight: 700;
+        .btn-outline-info:hover {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
         }
     </style>
 </head>
 
 <body>
 
-<!-- Navigation bar -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
     <div class="container">
 
@@ -173,10 +113,7 @@
         <button class="navbar-toggler"
                 type="button"
                 data-bs-toggle="collapse"
-                data-bs-target="#navMenu"
-                aria-controls="navMenu"
-                aria-expanded="false"
-                aria-label="Toggle navigation">
+                data-bs-target="#navMenu">
             <span class="navbar-toggler-icon"></span>
         </button>
 
@@ -184,57 +121,35 @@
 
             <ul class="navbar-nav ms-auto">
 
-                <!-- Machine Learning -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
                        href="#"
                        role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                       data-bs-toggle="dropdown">
                         Machine Learning
                     </a>
 
                     <ul class="dropdown-menu">
-
-                        <li>
-                            <a class="dropdown-item" href="/concept">
-                                Concepts
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="/types">
-                                Types
-                            </a>
-                        </li>
-
-                        <li>
-                            <a class="dropdown-item" href="/use-cases">
-                                Use Cases
-                            </a>
-                        </li>
-
+                        <li><a class="dropdown-item" href="/concept">Concepts</a></li>
+                        <li><a class="dropdown-item" href="/types">Types</a></li>
+                        <li><a class="dropdown-item" href="/use-cases">Use Cases</a></li>
                     </ul>
                 </li>
 
-                <!-- Supervised -->
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle"
                        href="#"
                        role="button"
-                       data-bs-toggle="dropdown"
-                       aria-expanded="false">
+                       data-bs-toggle="dropdown">
                         Supervised
                     </a>
 
                     <ul class="dropdown-menu">
-
                         <li>
                             <a class="dropdown-item" href="/linearRegression">
                                 Linear Regression
                             </a>
                         </li>
-
                     </ul>
                 </li>
 
@@ -244,200 +159,71 @@
     </div>
 </nav>
 
-
-<!-- Hero -->
 <header class="ml-hero">
-
     <div class="container">
-
-        <span class="ml-eyebrow">Real-Life Machine Learning</span>
-
-        <h1 class="ml-hero__title">
-            Use Case: Metro de Barcelona
-        </h1>
-
+        <span class="ml-eyebrow">Machine Learning</span>
+        <h1 class="ml-hero__title">Use Cases</h1>
         <p class="ml-hero__subtitle">
-            How Machine Learning can help improve air quality
-            and optimize ventilation inside metro stations.
+            Select a use case
         </p>
-
     </div>
-
 </header>
 
+<div class="container py-5">
 
-<!-- Main Content -->
-<main class="container py-5">
+    <div class="row g-4">
 
-    <!-- Context -->
-    <div class="ml-card p-4 p-md-5 mb-5">
-
-        <h2 class="mb-3">
-            <i class="bi bi-train-front"></i>
-            RESPIRA System
-        </h2>
-
-        <p>
-            The Barcelona Metro can use intelligent systems to monitor
-            environmental conditions inside its stations and improve
-            the quality of the air for passengers.
-        </p>
-
-        <p class="mb-0">
-            The system analyzes information such as temperature,
-            humidity and air quality to help determine when and how
-            ventilation should be adjusted.
-        </p>
-
-    </div>
-
-
-    <!-- Information -->
-    <h2 class="ml-section-title mb-5">
-        How is Machine Learning used?
-    </h2>
-
-    <div class="row g-4 mb-5">
-
-        <!-- Data -->
         <div class="col-md-6 col-lg-3">
-            <div class="ml-feature">
+            <div class="ml-feature text-center">
+                <i class="bi bi-1-circle"></i>
+                <h4>Use Case 1</h4>
 
-                <i class="bi bi-database"></i>
-
-                <h4>Data</h4>
-
-                <p>
-                    The system uses environmental information such as
-                    temperature, humidity and air quality collected
-                    from the stations.
-                </p>
-
+                <a href="/usecase1" class="btn btn-outline-info">
+                    Open
+                </a>
             </div>
         </div>
 
-
-        <!-- Prediction -->
         <div class="col-md-6 col-lg-3">
-            <div class="ml-feature">
+            <div class="ml-feature text-center">
+                <i class="bi bi-2-circle"></i>
+                <h4>Use Case 2</h4>
 
-                <i class="bi bi-graph-up-arrow"></i>
-
-                <h4>Prediction</h4>
-
-                <p>
-                    Machine Learning analyzes the available data to
-                    predict environmental conditions and ventilation needs.
-                </p>
-
+                <a href="/usecase2" class="btn btn-outline-info">
+                    Open
+                </a>
             </div>
         </div>
 
-
-        <!-- Decision -->
         <div class="col-md-6 col-lg-3">
-            <div class="ml-feature">
+            <div class="ml-feature text-center">
+                <i class="bi bi-3-circle"></i>
+                <h4>Use Case 3</h4>
 
-                <i class="bi bi-cpu"></i>
-
-                <h4>Adjustment</h4>
-
-                <p>
-                    The system can help determine when and how to
-                    activate or adjust ventilation.
-                </p>
-
+                <a href="/usecase3" class="btn btn-outline-info">
+                    Open
+                </a>
             </div>
         </div>
 
-
-        <!-- Benefit -->
         <div class="col-md-6 col-lg-3">
-            <div class="ml-feature">
+            <div class="ml-feature text-center">
+                <i class="bi bi-4-circle"></i>
+                <h4>Use Case 4</h4>
 
-                <i class="bi bi-leaf"></i>
-
-                <h4>Benefit</h4>
-
-                <p>
-                    Better air quality can be achieved while reducing
-                    unnecessary energy consumption.
-                </p>
-
+                <a href="/usecase4" class="btn btn-outline-info">
+                    Open
+                </a>
             </div>
         </div>
 
     </div>
 
+</div>
 
-    <!-- Type of Machine Learning -->
-    <div class="ml-card p-4 p-md-5 mb-5">
-
-        <h2 class="mb-3">
-            Type of Machine Learning
-        </h2>
-
-        <p>
-            This use case can be associated with
-            <strong>Supervised Learning</strong>, because the model
-            can learn from historical environmental measurements and
-            their corresponding ventilation conditions.
-        </p>
-
-        <div class="text-center mt-4">
-
-            <span class="ml-chip">Supervised Learning</span>
-            <span class="ml-chip">Regression</span>
-            <span class="ml-chip">Prediction</span>
-            <span class="ml-chip">Time Series</span>
-
-        </div>
-
-    </div>
-
-
-    <!-- Benefit -->
-    <div class="ml-card p-4 p-md-5 mb-5">
-
-        <h2 class="mb-3">
-            Why is it useful?
-        </h2>
-
-        <p>
-            Applying Machine Learning to environmental monitoring
-            can help transportation systems make better decisions
-            based on real-time and historical data.
-        </p>
-
-        <p class="mb-0">
-            In this case, the objective is to maintain suitable air
-            quality for passengers while using ventilation systems
-            more efficiently.
-        </p>
-
-    </div>
-
-
-    <div class="text-center my-5">
-
-        <a href="/" class="btn btn-outline-light btn-lg">
-            ← Back to Home
-        </a>
-
-    </div>
-
-</main>
-
-
-<!-- Footer -->
 <footer class="bg-dark text-white text-center py-3">
-
-    <p class="mb-0">
-        Machine Learning Educational Project
-    </p>
-
+    <p class="mb-0">Machine Learning Educational Project</p>
 </footer>
-
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
