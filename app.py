@@ -37,6 +37,7 @@ def usecase2():
 def usecase3():
     return render_template("usecase3.html")
 
+<<<<<<< HEAD
 @app.route("/linearRegression/application", methods = ["GET", "POST"])
 def linear_regression_application():
     prediction = None
@@ -64,6 +65,11 @@ def linear_regression_application():
         error = error,
         input_distance = input_distance
     )
+=======
+@app.route("/useCases/usecase4")
+def usecase4():
+    return render_template("usecase4.html")
+>>>>>>> 531a526 (use case 4)
 
 
 if __name__ == "__main__":
