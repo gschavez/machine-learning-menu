@@ -1,29 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>Linear Regression - Concepts</title>
 
-    <!-- Bootstrap -->
-    <link
-        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
-        rel="stylesheet"
-    >
-
-    <!-- Bootstrap Icons -->
-    <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
-    >
-
-    <!-- Google Fonts -->
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-        rel="stylesheet"
-    >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -41,771 +25,297 @@
             --font-body: 'Inter', sans-serif;
             --font-mono: 'JetBrains Mono', monospace;
         }
+        body { margin: 0; background: var(--bg-deep); color: var(--text-primary); font-family: var(--font-body); }
+        h1, h2, h3, h4, h5 { font-family: var(--font-display); }
+        a { color: var(--accent-cyan); }
+        a:focus-visible, button:focus-visible { outline: 2px solid var(--accent-cyan); outline-offset: 3px; }
 
-        body {
-            background:
-                radial-gradient(circle at top right, rgba(34, 211, 238, 0.08), transparent 30%),
-                linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
-            background-attachment: fixed;
-            color: var(--text-primary);
-            font-family: var(--font-body);
-            min-height: 100vh;
+        /* ---- Hero ---- */
+        .lr-hero {
+            position: relative; overflow: hidden;
+            background: linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
+            padding: 90px 20px 70px; text-align: center;
         }
-
-        h1, h2, h3, h4, h5 {
-            font-family: var(--font-display);
+        .lr-eyebrow {
+            font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.2em;
+            color: var(--accent-cyan); text-transform: uppercase;
         }
+        .lr-hero__title { font-weight: 700; font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 12px 0 16px; }
+        .lr-hero__subtitle { color: var(--text-muted); max-width: 640px; margin: 0 auto; font-size: 1.1rem; }
 
-        .navbar {
-            background: rgba(15, 23, 42, 0.95) !important;
-            backdrop-filter: blur(10px);
-        }
+        /* ---- Cards ---- */
+        .lr-card { background: var(--surface-solid); border: 1px solid #ffffff14; border-radius: 18px; }
+        .lr-card h2 { color: var(--accent-cyan); font-size: 1.5rem; font-weight: 700; }
+        .lr-card p, .lr-card li { color: var(--text-muted); line-height: 1.7; }
 
-        .navbar-brand {
-            font-family: var(--font-display);
-            font-weight: 700;
-        }
+        .lr-section-title { text-align: center; font-weight: 700; }
 
-        .hero {
-            padding: 90px 0 70px;
-            text-align: center;
-        }
-
-        .eyebrow {
-            color: var(--accent-cyan);
-            font-family: var(--font-mono);
-            font-size: 0.8rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            margin-bottom: 15px;
-        }
-
-        .hero h1 {
-            font-size: clamp(2.5rem, 6vw, 4.5rem);
-            font-weight: 700;
-            margin-bottom: 20px;
-        }
-
-        .hero h1 span {
-            color: var(--accent-cyan);
-        }
-
-        .hero p {
-            color: var(--text-muted);
-            max-width: 750px;
-            margin: auto;
-            font-size: 1.1rem;
-        }
-
-        .section {
-            padding: 45px 0;
-        }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 35px;
-        }
-
-        .section-title h2 {
-            color: var(--accent-cyan);
-            font-weight: 600;
-        }
-
-        .section-title p {
-            color: var(--text-muted);
-        }
-
-        .card-custom {
-            background: var(--surface);
-            border: 1px solid rgba(148, 163, 184, 0.15);
-            border-radius: 18px;
-            padding: 30px;
-            height: 100%;
-            transition: 0.25s ease;
-        }
-
-        .card-custom:hover {
-            border-color: rgba(34, 211, 238, 0.45);
-            transform: translateY(-4px);
-        }
-
-        .card-custom h3 {
-            color: var(--accent-cyan);
-            margin-bottom: 15px;
-        }
-
-        .card-custom p {
-            color: var(--text-muted);
-            line-height: 1.7;
-        }
-
-        .icon-box {
-            width: 55px;
-            height: 55px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        /* ---- Formula box ---- */
+        .lr-formula {
+            background: var(--bg-deep);
+            border: 1px solid var(--accent-cyan);
             border-radius: 14px;
-            background: rgba(34, 211, 238, 0.1);
-            color: var(--accent-cyan);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-        }
-
-        .variable-card {
+            padding: 24px;
             text-align: center;
-        }
-
-        .variable-symbol {
             font-family: var(--font-mono);
-            font-size: 2.5rem;
-            font-weight: 600;
-            color: var(--accent-violet);
-        }
-
-        .variable-name {
+            font-size: 1.6rem;
             color: var(--accent-cyan);
-            font-weight: 600;
+            margin: 20px 0;
         }
-
-        .formula {
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(167, 139, 250, 0.3);
-            border-radius: 16px;
-            padding: 30px;
-            text-align: center;
-            margin: 30px auto;
-            max-width: 650px;
-        }
-
-        .formula code {
-            font-family: var(--font-mono);
-            color: var(--accent-violet);
-            font-size: clamp(1.3rem, 4vw, 2rem);
-        }
-
-        .process {
+        .lr-formula-legend {
             display: flex;
-            align-items: center;
             justify-content: center;
+            gap: 24px;
             flex-wrap: wrap;
-            gap: 15px;
-            margin-top: 30px;
+            margin-top: 16px;
         }
-
-        .process-step {
-            background: var(--surface-solid);
-            border: 1px solid rgba(34, 211, 238, 0.2);
-            border-radius: 14px;
-            padding: 20px 25px;
-            text-align: center;
-            min-width: 170px;
-        }
-
-        .process-step strong {
-            display: block;
-            color: var(--accent-cyan);
-            margin-bottom: 5px;
-        }
-
-        .process-step span {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-        }
-
-        .arrow {
-            color: var(--accent-violet);
-            font-size: 1.5rem;
-        }
-
-        .example-box {
-            background: linear-gradient(
-                135deg,
-                rgba(34, 211, 238, 0.08),
-                rgba(167, 139, 250, 0.08)
-            );
-            border: 1px solid rgba(34, 211, 238, 0.2);
-            border-radius: 18px;
-            padding: 30px;
-        }
-
-        .dataset-table {
-            background: rgba(15, 23, 42, 0.6);
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        .dataset-table table {
-            margin-bottom: 0;
-            color: var(--text-primary);
-        }
-
-        .dataset-table th {
-            color: var(--accent-cyan);
-            background: rgba(34, 211, 238, 0.08);
-        }
-
-        .dataset-table td {
-            color: var(--text-muted);
-        }
-
-        .chip {
-            display: inline-block;
-            padding: 7px 13px;
-            margin: 4px;
-            border-radius: 999px;
-            background: rgba(167, 139, 250, 0.12);
-            border: 1px solid rgba(167, 139, 250, 0.25);
-            color: var(--accent-violet);
+        .lr-formula-legend span {
+            font-family: var(--font-mono);
             font-size: 0.85rem;
-        }
-
-        footer {
-            margin-top: 50px;
-            padding: 30px 0;
-            border-top: 1px solid rgba(148, 163, 184, 0.1);
-            text-align: center;
             color: var(--text-muted);
         }
+        .lr-formula-legend strong { color: var(--accent-violet); }
+
+        /* ---- Process steps (X -> Model -> Y) ---- */
+        .lr-process {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+        .lr-process__step {
+            width: 220px;
+            text-align: center;
+            padding: 0 12px;
+        }
+        .lr-process__node {
+            width: 56px; height: 56px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-mono); font-weight: 500;
+            color: var(--bg-deep);
+            background: var(--accent-cyan);
+            box-shadow: 0 0 24px #22d3ee55;
+        }
+        .lr-process__step h5 { font-size: 1.05rem; margin-bottom: 8px; }
+        .lr-process__step p { color: var(--text-muted); font-size: 0.92rem; }
+        .lr-process__connector {
+            flex: 0 0 60px;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-cyan), var(--accent-violet));
+            margin-top: 28px;
+            opacity: 0.6;
+        }
+        @media (max-width: 767px) {
+            .lr-process__connector { display: none; }
+        }
+
+        /* ---- Feature cards (X / Y variables) ---- */
+        .lr-feature {
+            background: var(--surface);
+            border: 1px solid #ffffff14;
+            border-radius: 16px;
+            height: 100%;
+            padding: 28px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+        .lr-feature:hover { transform: translateY(-4px); border-color: var(--accent-cyan); }
+        .lr-feature i { font-size: 1.6rem; color: var(--accent-cyan); margin-bottom: 12px; display: block; }
+        .lr-feature h4 { font-size: 1.05rem; margin-bottom: 8px; }
+        .lr-feature p { color: var(--text-muted); font-size: 0.92rem; margin: 0; }
+
+        /* ---- Example chip ---- */
+        .lr-chip {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-violet);
+            background: #a78bfa1a;
+            border: 1px solid #a78bfa44;
+            border-radius: 999px;
+            padding: 8px 18px;
+            display: inline-block;
+            margin: 6px;
+        }
+
+        .lr-btn-primary {
+            background: var(--accent-cyan); color: var(--bg-deep); font-weight: 500; border: none;
+            padding: 10px 26px; border-radius: 10px; text-decoration: none; display: inline-block;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .lr-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px #22d3ee44; color: var(--bg-deep); }
     </style>
 </head>
 
 <body>
 
-    <!-- Navigation -->
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
         <div class="container">
-
-            <a class="navbar-brand" href="/">
-                <i class="bi bi-cpu"></i>
-                Machine Learning
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="bi bi-diagram-3"></i> Machine Learning
             </a>
-
-            <button
-                class="navbar-toggler"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarNav"
-            >
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu"
+                    aria-controls="navMenu" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-
-            <div class="collapse navbar-collapse" id="navbarNav">
-
+            <div class="collapse navbar-collapse" id="navMenu">
                 <ul class="navbar-nav ms-auto">
-
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link" href="/"><i class="bi bi-house-door"></i> Home</a>
                     </li>
-
                     <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            data-bs-toggle="dropdown"
-                        >
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Machine Learning
                         </a>
-
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/concept">
-                                    Concepts
-                                </a>
-                            </li>
-
-                            <li>
-                                <a class="dropdown-item" href="/types">
-                                    Types of Machine Learning
-                                </a>
-                            </li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/concept">Concepts</a></li>
+                            <li><a class="dropdown-item" href="/types">Types of Machine Learning</a></li>
+                            <li><a class="dropdown-item" href="/use-cases">Use Cases</a></li>
                         </ul>
                     </li>
-
                     <li class="nav-item dropdown">
-                        <a
-                            class="nav-link dropdown-toggle"
-                            href="#"
-                            data-bs-toggle="dropdown"
-                        >
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Supervised
                         </a>
-
-                        <ul class="dropdown-menu dropdown-menu-dark">
-                            <li>
-                                <a class="dropdown-item" href="/linearRegression">
-                                    Linear Regression
-                                </a>
-                            </li>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/linearRegression/concepts">Linear Regression Concepts</a></li>
+                            <li><a class="dropdown-item" href="/linearRegression/application">Linear Regression Application</a></li>
                         </ul>
                     </li>
-
                 </ul>
-
             </div>
         </div>
     </nav>
 
-
     <!-- Hero -->
-    <header class="hero">
-        <div class="container">
-
-            <div class="eyebrow">
-                Supervised Learning
-            </div>
-
-            <h1>
-                Linear <span>Regression</span>
-            </h1>
-
-            <p>
-                Understand how linear regression models the relationship
-                between variables and uses that relationship to make predictions.
-            </p>
-
+    <header class="lr-hero">
+        <div class="container position-relative">
+            <span class="lr-eyebrow">Supervised Learning</span>
+            <h1 class="lr-hero__title">Linear Regression: Concepts</h1>
+            <p class="lr-hero__subtitle">Understanding how a model learns to predict a numeric value</p>
         </div>
     </header>
 
+    <div class="container py-5">
 
-    <!-- What is Linear Regression -->
-    <section class="section">
-        <div class="container">
+        <!-- What is it -->
+        <div class="lr-card p-4 p-md-5 mb-5">
+            <h2 class="mb-3">What is Linear Regression?</h2>
+            <p class="mb-0">
+                Linear Regression is a supervised Machine Learning algorithm used to model the
+                relationship between two variables by fitting a straight line to the observed data.
+                It is one of the simplest and most widely used algorithms for prediction tasks, and it
+                solves <strong style="color: var(--accent-cyan);">regression problems</strong> — predicting
+                a continuous numeric value such as a price, a temperature, or the cost of a taxi ride.
+            </p>
+        </div>
 
-            <div class="section-title">
-                <h2>What is Linear Regression?</h2>
-                <p>
-                    A simple and fundamental supervised learning algorithm.
-                </p>
+        <!-- The formula -->
+        <h2 class="lr-section-title mb-4">The Regression Formula</h2>
+        <div class="lr-card p-4 p-md-5 mb-5">
+            <div class="lr-formula">
+                Y = b<sub>0</sub> + b<sub>1</sub>X
             </div>
-
-            <div class="row g-4">
-
-                <div class="col-lg-7">
-                    <div class="card-custom">
-
-                        <div class="icon-box">
-                            <i class="bi bi-graph-up"></i>
-                        </div>
-
-                        <h3>Definition</h3>
-
-                        <p>
-                            Linear Regression is a supervised machine learning
-                            algorithm used to model the relationship between
-                            a dependent variable and one or more independent
-                            variables.
-                        </p>
-
-                        <p>
-                            In <strong>Simple Linear Regression</strong>, the
-                            model uses one independent variable to estimate
-                            the value of one dependent variable.
-                        </p>
-
-                        <p>
-                            The objective is to find the line that best
-                            represents the relationship between the observed
-                            data points.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-lg-5">
-                    <div class="card-custom">
-
-                        <div class="icon-box">
-                            <i class="bi bi-bullseye"></i>
-                        </div>
-
-                        <h3>Main Objective</h3>
-
-                        <p>
-                            The main objective is to use existing data to
-                            identify a relationship and then use that
-                            relationship to estimate unknown values.
-                        </p>
-
-                        <div class="chip">
-                            Prediction
-                        </div>
-
-                        <div class="chip">
-                            Relationship
-                        </div>
-
-                        <div class="chip">
-                            Quantitative Data
-                        </div>
-
-                    </div>
-                </div>
-
+            <div class="lr-formula-legend">
+                <span><strong>Y</strong> — predicted value (dependent variable)</span>
+                <span><strong>X</strong> — input value (independent variable)</span>
+                <span><strong>b₀</strong> — intercept (value of Y when X = 0)</span>
+                <span><strong>b₁</strong> — slope (how much Y changes per unit of X)</span>
             </div>
         </div>
-    </section>
 
-
-    <!-- Variables -->
-    <section class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Independent & Dependent Variables</h2>
-                <p>
-                    Understanding the role of X and Y is essential.
-                </p>
+        <!-- Process: X -> Model -> Y -->
+        <h2 class="lr-section-title mb-5">How does it work?</h2>
+        <div class="lr-process mb-5">
+            <div class="lr-process__step">
+                <div class="lr-process__node">01</div>
+                <h5>Independent Variable (X)</h5>
+                <p>The known input value used to make the prediction.</p>
             </div>
-
-            <div class="row g-4">
-
-                <div class="col-md-6">
-                    <div class="card-custom variable-card">
-
-                        <div class="variable-symbol">X</div>
-
-                        <h3>Independent Variable</h3>
-
-                        <p>
-                            The variable used as input by the model.
-                            Its value is used to estimate the dependent
-                            variable.
-                        </p>
-
-                        <div class="variable-name">
-                            Distance (km)
-                        </div>
-
-                        <p>
-                            In our project, <strong>distancia_km</strong>
-                            represents the distance traveled by a taxi.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-6">
-                    <div class="card-custom variable-card">
-
-                        <div class="variable-symbol">Y</div>
-
-                        <h3>Dependent Variable</h3>
-
-                        <p>
-                            The variable that the model attempts to predict
-                            based on the independent variable.
-                        </p>
-
-                        <div class="variable-name">
-                            Cost (COP)
-                        </div>
-
-                        <p>
-                            In our project, <strong>costo</strong>
-                            represents the estimated taxi fare.
-                        </p>
-
-                    </div>
-                </div>
-
+            <div class="lr-process__connector"></div>
+            <div class="lr-process__step">
+                <div class="lr-process__node">02</div>
+                <h5>Trained Model</h5>
+                <p>The regression line, learned from historical data, connects X to Y.</p>
+            </div>
+            <div class="lr-process__connector"></div>
+            <div class="lr-process__step">
+                <div class="lr-process__node">03</div>
+                <h5>Dependent Variable (Y)</h5>
+                <p>The predicted output value the model estimates.</p>
             </div>
         </div>
-    </section>
 
-
-    <!-- How it works -->
-    <section class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>How Does It Work?</h2>
-                <p>
-                    The model learns a relationship from historical data.
-                </p>
+        <!-- Variables -->
+        <h2 class="lr-section-title mb-5">The Two Variables</h2>
+        <div class="row g-4 mb-5">
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+                    <i class="bi bi-arrow-down-right-circle"></i>
+                    <h4>Independent Variable (X)</h4>
+                    <p>The input used to make the prediction. It is the value we already know.</p>
+                </div>
             </div>
-
-            <div class="process">
-
-                <div class="process-step">
-                    <strong>1. Data</strong>
-                    <span>Distance and cost records</span>
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+                    <i class="bi bi-arrow-up-right-circle"></i>
+                    <h4>Dependent Variable (Y)</h4>
+                    <p>The output the model tries to predict, based on the independent variable.</p>
                 </div>
-
-                <div class="arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
-
-                <div class="process-step">
-                    <strong>2. Training</strong>
-                    <span>Find the best-fitting line</span>
-                </div>
-
-                <div class="arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
-
-                <div class="process-step">
-                    <strong>3. Model</strong>
-                    <span>Learn the relationship</span>
-                </div>
-
-                <div class="arrow">
-                    <i class="bi bi-arrow-right"></i>
-                </div>
-
-                <div class="process-step">
-                    <strong>4. Prediction</strong>
-                    <span>Estimate a new cost</span>
-                </div>
-
             </div>
-
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+                    <i class="bi bi-graph-up"></i>
+                    <h4>Linear Relationship</h4>
+                    <p>As X increases or decreases, Y tends to change in a consistent, proportional way.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+                    <i class="bi bi-rulers"></i>
+                    <h4>Regression Line</h4>
+                    <p>The straight line that best fits the data, minimizing the distance to all data points.</p>
+                </div>
+            </div>
         </div>
-    </section>
 
-
-    <!-- Equation -->
-    <section class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Regression Equation</h2>
-                <p>
-                    Simple Linear Regression can be represented mathematically.
-                </p>
-            </div>
-
-            <div class="formula">
-                <code>Y = β₀ + β₁X</code>
-            </div>
-
-            <div class="row g-4">
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <h3>Y</h3>
-
-                        <p>
-                            Predicted dependent variable.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <h3>β₀</h3>
-
-                        <p>
-                            Intercept of the regression line.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <h3>β₁X</h3>
-
-                        <p>
-                            Effect of the independent variable
-                            on the prediction.
-                        </p>
-
-                    </div>
-                </div>
-
-            </div>
-
+        <!-- Prediction -->
+        <div class="lr-card p-4 p-md-5 mb-5">
+            <h2 class="mb-3">Prediction</h2>
+            <p class="mb-0">
+                Once the model is trained and the regression line is calculated, it can be used to predict
+                the value of Y for a new, previously unseen value of X — simply by locating that point on the line.
+            </p>
         </div>
-    </section>
 
-
-    <!-- Example -->
-    <section class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Simple Example</h2>
-                <p>
-                    Applying the concept to our taxi dataset.
-                </p>
+        <!-- Example -->
+        <div class="lr-card p-4 p-md-5 text-center">
+            <h2 class="mb-3">A Simple Example</h2>
+            <p class="text-muted mb-4">Applying the formula to this project's topic:</p>
+            <div>
+                <span class="lr-chip">X = Distance (km)</span>
+                <span class="lr-chip">Y = Cost ($)</span>
+                <span class="lr-chip">Model learns b₀ and b₁ from 600 trips</span>
             </div>
-
-            <div class="example-box">
-
-                <h3>
-                    Predicting Taxi Cost
-                </h3>
-
-                <p>
-                    Imagine that we want to estimate the cost of a taxi trip
-                    based on the distance traveled.
-                </p>
-
-                <p>
-                    If the passenger enters a new distance, such as
-                    <strong>10 km</strong>, the trained regression model can
-                    use the learned relationship between distance and cost
-                    to estimate the corresponding fare.
-                </p>
-
-                <div class="formula">
-                    <code>Distance → Regression Model → Estimated Cost</code>
-                </div>
-
-                <p class="mb-0">
-                    The important idea is that the prediction is generated
-                    by the trained model rather than manually assigning
-                    a value.
-                </p>
-
+            <p class="text-muted mt-4 mb-0">
+                If we know the distance of a taxi ride (X), Linear Regression can predict the
+                approximate cost of that ride (Y), based on patterns learned from hundreds of previous trips.
+            </p>
+            <div class="mt-4">
+                <a href="/linearRegression/application" class="lr-btn-primary">
+                    See the Live Application <i class="bi bi-arrow-right"></i>
+                </a>
             </div>
-
         </div>
-    </section>
 
+    </div>
 
-    <!-- Dataset -->
-    <section class="section">
-        <div class="container">
-
-            <div class="section-title">
-                <h2>Our Taxi Dataset</h2>
-                <p>
-                    Dataset used for the Linear Regression application.
-                </p>
-            </div>
-
-            <div class="row g-4 mb-4">
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <div class="icon-box mx-auto">
-                            <i class="bi bi-database"></i>
-                        </div>
-
-                        <h3>600</h3>
-
-                        <p>
-                            Records available for training the model.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <div class="icon-box mx-auto">
-                            <i class="bi bi-signpost-2"></i>
-                        </div>
-
-                        <h3>distancia_km</h3>
-
-                        <p>
-                            Independent variable (X).
-                            Distance measured in kilometers.
-                        </p>
-
-                    </div>
-                </div>
-
-                <div class="col-md-4">
-                    <div class="card-custom text-center">
-
-                        <div class="icon-box mx-auto">
-                            <i class="bi bi-cash-coin"></i>
-                        </div>
-
-                        <h3>costo</h3>
-
-                        <p>
-                            Dependent variable (Y).
-                            Cost measured in Colombian pesos (COP).
-                        </p>
-
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="dataset-table table-responsive">
-
-                <table class="table table-dark table-hover">
-
-                    <thead>
-                        <tr>
-                            <th>Variable</th>
-                            <th>Role</th>
-                            <th>Unit</th>
-                            <th>Description</th>
-                        </tr>
-                    </thead>
-
-                    <tbody>
-
-                        <tr>
-                            <td>distancia_km</td>
-                            <td>Independent (X)</td>
-                            <td>km</td>
-                            <td>Distance traveled by the taxi.</td>
-                        </tr>
-
-                        <tr>
-                            <td>costo</td>
-                            <td>Dependent (Y)</td>
-                            <td>COP</td>
-                            <td>Estimated cost of the taxi trip.</td>
-                        </tr>
-
-                    </tbody>
-
-                </table>
-
-            </div>
-
-            <div class="card-custom mt-4">
-
-                <h3>
-                    Dataset Origin
-                </h3>
-
-                <p>
-                    The dataset is synthetic and was generated specifically
-                    for this academic project. It contains 600 records
-                    representing the relationship between taxi trip distance
-                    and estimated cost.
-                </p>
-
-                <p class="mb-0">
-                    The dataset is stored in
-                    <strong>data/taxi_data.csv</strong> and will be used by
-                    the Linear Regression application.
-                </p>
-
-            </div>
-
-        </div>
-    </section>
-
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            Machine Learning Educational Project
-        </div>
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">Machine Learning Educational Project</p>
     </footer>
 
-
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
-    </script>
-
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
