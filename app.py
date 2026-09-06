@@ -37,7 +37,7 @@ def usecase2():
 def usecase3():
     return render_template("usecase3.html")
 
-@app.route("/usecase4")
+@app.route("/useCases/usecase4")
 def usecase4():
     return render_template("usecase4.html")
 
