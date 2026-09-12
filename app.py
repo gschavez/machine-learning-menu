@@ -208,7 +208,10 @@ def decision_tree_application():
         player_a_ranking=input_player_a_ranking,
         player_b_ranking=input_player_b_ranking,
         player_a_recent_win_rate=input_player_a_recent_win_rate,
-        player_b_recent_win_rate=input_player_b_recent_win_rate
+        player_b_recent_win_rate=input_player_b_recent_win_rate,
+        num_records=tennis_model.get_num_records(),
+        training_records=tennis_model.get_training_records(),
+        testing_records=tennis_model.get_testing_records()
     )
 
 
