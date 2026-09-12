@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decision Tree - Application</title>
+
+     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: #111827;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #e2e8f0 !important;
+        }
+
+        .nav-link:hover {
+            color: #38bdf8 !important;
+        }
+
+        .hero {
+            padding: 70px 0 40px;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            max-width: 760px;
+        }
+
+        .panel,
+        .stat-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+        }
+
+        .panel {
+            padding: 28px;
+        }
+
+        .panel h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            padding: 18px;
+            text-align: center;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #38bdf8;
+        }
+
+        .stat-label {
+            color: #94a3b8;
+            font-size: 0.82rem;
+        }
+
+        .explanation {
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .class-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+            margin: 4px 4px 0 0;
+            background: #0f172a;
+            border: 1px solid #334155;
+        }
+
+        .chart-wrap {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .chart-wrap img {
+            max-width: 100%;
+            border-radius: 8px;
+        }
+
+        .form-label {
+            color: #94a3b8;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem;
+        }
+
+        .form-control {
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        .form-control:focus {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-color: #38bdf8;
+            box-shadow: 0 0 0 3px #38bdf833;
+        }
+
+        .btn-predict {
+            background: #38bdf8;
+            color: #0f172a;
+            font-weight: 600;
+            border: none;
+            border-radius: 10px;
+            padding: 10px 26px;
+        }
+
+        .btn-predict:hover {
+            background: #22d3ee;
+            color: #0f172a;
+        }
+
+        .result-box {
+            background: #38bdf81a;
+            border: 1px solid #38bdf844;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #38bdf8;
+        }
+
+        .error-box {
+            background: #f871711a;
+            border: 1px solid #f8717144;
+            border-radius: 12px;
+            padding: 16px 20px;
+            color: #f87171;
+        }
+
+        .back-link {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg">
+    <div class="container">
+        <a class="navbar-brand fw-bold" href="/">Machine Learning</a>
+
+        <button class="navbar-toggler" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown">
+                        Machine Learning
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href="/concept">
+                                Concepts
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/types">
+                                Types
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href="/use-cases">
+                                Use Cases
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle"
+                       href="#"
+                       role="button"
+                       data-bs-toggle="dropdown">
+                        Supervised
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item"
+                               href="/logisticRegression/concepts">
+                                Logistic Regression
+                            </a>
+                        </li>
+
+                        <li>
+                            <a class="dropdown-item"
+                               href="/decisionTree/concepts">
+                                Decision Tree
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="container">
+
+    <section class="hero">
+        <span class="text-info fw-semibold">
+            SUPERVISED LEARNING &middot; APPLICATION
+        </span>
+
+        <h1 class="display-5 mt-2">
+            Decision Tree Application
+        </h1>
+
+        <p class="subtitle mt-3">
+            Classifying the outcome of a tennis match using a Decision
+            Tree trained on real ATP match data.
+        </p>
+    </section>
+
+    <!-- Problem context -->
+    <section class="panel mb-4">
+        <h2>Problem Context</h2>
+
+        <div class="explanation">
+            <p>
+                This application uses a Decision Tree to classify the
+                outcome of a tennis match between two players, Player A
+                and Player B. Unlike the Logistic Regression model
+                (which uses a single variable), this model uses
+                <strong>four independent variables</strong> describing
+                both players.
+            </p>
+
+            <p class="mb-0">
+                The model attempts to classify each match into one of two
+                classes: Player A wins the match, or Player A loses the
+                match.
+            </p>
+        </div>
+    </section>
+
+    <!-- Variables -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="panel h-100">
+                <h2 style="font-size:1.2rem;">
+                    Independent Variables (X)
+                </h2>
+
+                <div class="explanation mb-0">
+                    <ul class="mb-0">
+                        <li><span class="code">player_a_ranking</span> — Player A's ATP ranking.</li>
+                        <li><span class="code">player_b_ranking</span> — Player B's ATP ranking.</li>
+                        <li><span class="code">player_a_recent_win_rate</span> — Player A's win rate over their last 10 matches.</li>
+                        <li><span class="code">player_b_recent_win_rate</span> — Player B's win rate over their last 10 matches.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel h-100">
+                <h2 style="font-size:1.2rem;">
+                    Target Variable (Y)
+                </h2>
+
+                <p class="explanation mb-2">
+                    <span class="code">player_a_wins</span> — binary
+                    result of the match.
+                </p>
+
+                <span class="class-badge">0 = Player A loses</span>
+                <span class="class-badge">1 = Player A wins</span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Dataset -->
+    <section class="panel mb-4">
+        <h2>Dataset and Training</h2>
+
+        <div class="row g-3 mb-3">
+
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">{{ num_records }}</div>
+                    <div class="stat-label">Total records</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">4</div>
+                    <div class="stat-label">Independent variables</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">{{ training_records }}</div>
+                    <div class="stat-label">Training records (80%)</div>
+                </div>
+            </div>
+
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">{{ testing_records }}</div>
+                    <div class="stat-label">Testing records (20%)</div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="explanation mb-0">
+            <p>
+                The dataset is loaded from
+                <span class="code">data/tennis_matches.csv</span> using
+                Pandas, built from real ATP match results (2021–2024).
+                It is split into 80% training data and 20% testing data
+                using <span class="code">train_test_split</span>, with
+                stratification on the target class.
+            </p>
+
+            <p class="mb-0">
+                The <span class="code">DecisionTreeClassifier</span> from
+                scikit-learn is trained on the training set. Predictions
+                shown below and on the Evaluation page are generated by
+                the trained model — none of the results are hard-coded.
+            </p>
+        </div>
+    </section>
+
+    <!-- Data visualization -->
+    <section class="panel mb-4">
+        <h2>Data Visualization</h2>
+
+        <div class="chart-wrap">
+            <img src="{{ url_for('static', filename='decision_tree_scatter.png') }}"
+                 alt="Player rankings by match outcome">
+        </div>
+
+        <p class="explanation mt-3 mb-0 text-center">
+            Each point is one match. Blue points are matches Player A
+            won; red points are matches Player A lost, plotted by both
+            players' rankings.
+        </p>
+    </section>
+
+    <!-- Tree visualization -->
+    <section class="panel mb-4">
+        <h2>Decision Tree Visualization</h2>
+
+        <div class="chart-wrap">
+            <img src="{{ url_for('static', filename='decision_tree_structure.png') }}"
+                 alt="Decision tree structure">
+        </div>
+
+        <p class="explanation mt-3 mb-0 text-center">
+            The top 3 levels of the trained tree. Each box shows the
+            splitting rule, the Gini impurity, the number of samples
+            that reached that node, and the majority class.
+        </p>
+    </section>
+
+    <!-- Prediction form -->
+    <section class="panel mb-5">
+        <h2>Try a Prediction</h2>
+
+        <p class="explanation">
+            Enter values for all four variables to classify the expected
+            outcome of the match.
+        </p>
+
+        <form method="POST" class="row g-3">
+
+            <div class="col-md-6">
+                <label for="player_a_ranking" class="form-label d-block mb-1">
+                    Player A ranking
+                </label>
+                <input type="text" id="player_a_ranking" name="player_a_ranking"
+                       class="form-control"
+                       value="{{ player_a_ranking or '' }}"
+                       placeholder="e.g. 25">
+            </div>
+
+            <div class="col-md-6">
+                <label for="player_b_ranking" class="form-label d-block mb-1">
+                    Player B ranking
+                </label>
+                <input type="text" id="player_b_ranking" name="player_b_ranking"
+                       class="form-control"
+                       value="{{ player_b_ranking or '' }}"
+                       placeholder="e.g. 60">
+            </div>
+
+            <div class="col-md-6">
+                <label for="player_a_recent_win_rate" class="form-label d-block mb-1">
+                    Player A recent win rate (0–1)
+                </label>
+                <input type="text" id="player_a_recent_win_rate" name="player_a_recent_win_rate"
+                       class="form-control"
+                       value="{{ player_a_recent_win_rate or '' }}"
+                       placeholder="e.g. 0.7">
+            </div>
+
+            <div class="col-md-6">
+                <label for="player_b_recent_win_rate" class="form-label d-block mb-1">
+                    Player B recent win rate (0–1)
+                </label>
+                <input type="text" id="player_b_recent_win_rate" name="player_b_recent_win_rate"
+                       class="form-control"
+                       value="{{ player_b_recent_win_rate or '' }}"
+                       placeholder="e.g. 0.4">
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn-predict">
+                    Predict
+                </button>
+            </div>
+
+        </form>
+
+        {% if error %}
+            <div class="error-box mt-4">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if prediction is not none %}
+            <div class="result-box mt-4">
+                {% if prediction == 1 %}
+                    Prediction: <strong>Player A wins</strong>.
+                    The model classified the match as class <strong>1</strong>.
+                {% else %}
+                    Prediction: <strong>Player A loses</strong>.
+                    The model classified the match as class <strong>0</strong>.
+                {% endif %}
+            </div>
+        {% endif %}
+    </section>
+
+    <div class="mb-5">
+        <a href="/decisionTree/evaluation" class="back-link">
+            Continue to Evaluation Metrics
+            <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+</html>
