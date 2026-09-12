@@ -2,3 +2,9 @@
 __pycache__/
 *.pyc
 .vscode/
+
+# Raw ATP source datasets
+data/atp_matches_2021.csv
+data/atp_matches_2022.csv
+data/atp_matches_2023.csv
+data/atp_matches_2024.csv

@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logistic Regression - Concepts</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-deep: #0f172a;
+            --grad-1: #0f2027;
+            --grad-2: #203a43;
+            --grad-3: #2c5364;
+            --surface: #16233bcc;
+            --surface-solid: #16233b;
+            --accent-cyan: #22d3ee;
+            --accent-violet: #a78bfa;
+            --text-primary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --font-display: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg-deep);
+            color: var(--text-primary);
+            font-family: var(--font-body);
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: var(--font-display);
+        }
+
+        a {
+            color: var(--accent-cyan);
+        }
+
+        a:focus-visible,
+        button:focus-visible {
+            outline: 2px solid var(--accent-cyan);
+            outline-offset: 3px;
+        }
+
+        /* Hero */
+        .lr-hero {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(
+                135deg,
+                var(--grad-1),
+                var(--grad-2),
+                var(--grad-3)
+            );
+            padding: 90px 20px 70px;
+            text-align: center;
+        }
+
+        .lr-eyebrow {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            letter-spacing: 0.2em;
+            color: var(--accent-cyan);
+            text-transform: uppercase;
+        }
+
+        .lr-hero__title {
+            font-weight: 700;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin: 12px 0 16px;
+        }
+
+        .lr-hero__subtitle {
+            color: var(--text-muted);
+            max-width: 680px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        /* Cards */
+        .lr-card {
+            background: var(--surface-solid);
+            border: 1px solid #ffffff14;
+            border-radius: 18px;
+        }
+
+        .lr-card h2 {
+            color: var(--accent-cyan);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .lr-card p,
+        .lr-card li {
+            color: var(--text-muted);
+            line-height: 1.7;
+        }
+
+        .lr-section-title {
+            text-align: center;
+            font-weight: 700;
+        }
+
+        /* Formula */
+        .lr-formula {
+            background: var(--bg-deep);
+            border: 1px solid var(--accent-cyan);
+            border-radius: 14px;
+            padding: 24px;
+            text-align: center;
+            font-family: var(--font-mono);
+            font-size: 1.5rem;
+            color: var(--accent-cyan);
+            margin: 20px 0;
+        }
+
+        .lr-formula-legend {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-top: 16px;
+        }
+
+        .lr-formula-legend span {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+
+        .lr-formula-legend strong {
+            color: var(--accent-violet);
+        }
+
+        /* Process */
+        .lr-process {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 0;
+            flex-wrap: wrap;
+        }
+
+        .lr-process__step {
+            width: 220px;
+            text-align: center;
+            padding: 0 12px;
+        }
+
+        .lr-process__node {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 16px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-mono);
+            font-weight: 500;
+            color: var(--bg-deep);
+            background: var(--accent-cyan);
+            box-shadow: 0 0 24px #22d3ee55;
+        }
+
+        .lr-process__step h5 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .lr-process__step p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+        }
+
+        .lr-process__connector {
+            flex: 0 0 60px;
+            height: 2px;
+            background: linear-gradient(
+                90deg,
+                var(--accent-cyan),
+                var(--accent-violet)
+            );
+            margin-top: 28px;
+            opacity: 0.6;
+        }
+
+        @media (max-width: 767px) {
+            .lr-process__connector {
+                display: none;
+            }
+        }
+
+        /* Feature cards */
+        .lr-feature {
+            background: var(--surface);
+            border: 1px solid #ffffff14;
+            border-radius: 16px;
+            height: 100%;
+            padding: 28px;
+            transition: transform 0.2s ease, border-color 0.2s ease;
+        }
+
+        .lr-feature:hover {
+            transform: translateY(-4px);
+            border-color: var(--accent-cyan);
+        }
+
+        .lr-feature i {
+            font-size: 1.6rem;
+            color: var(--accent-cyan);
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .lr-feature h4 {
+            font-size: 1.05rem;
+            margin-bottom: 8px;
+        }
+
+        .lr-feature p {
+            color: var(--text-muted);
+            font-size: 0.92rem;
+            margin: 0;
+        }
+
+        /* Example chips */
+        .lr-chip {
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            color: var(--accent-violet);
+            background: #a78bfa1a;
+            border: 1px solid #a78bfa44;
+            border-radius: 999px;
+            padding: 8px 18px;
+            display: inline-block;
+            margin: 6px;
+        }
+
+        .lr-btn-primary {
+            background: var(--accent-cyan);
+            color: var(--bg-deep);
+            font-weight: 500;
+            border: none;
+            padding: 10px 26px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-block;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .lr-btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px #22d3ee44;
+            color: var(--bg-deep);
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Navigation bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+
+            <a class="navbar-brand d-flex align-items-center gap-2" href="/">
+                <i class="bi bi-diagram-3"></i> Machine Learning
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navMenu"
+                aria-controls="navMenu"
+                aria-expanded="false"
+                aria-label="Toggle navigation">
+
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">
+                            <i class="bi bi-house-door"></i> Home
+                        </a>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Machine Learning
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/concept">
+                                    Concepts
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/types">
+                                    Types of Machine Learning
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/use-cases">
+                                    Use Cases
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="nav-item dropdown">
+                        <a
+                            class="nav-link dropdown-toggle"
+                            href="#"
+                            role="button"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                            Supervised
+                        </a>
+
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a class="dropdown-item" href="/linearRegression/concepts">
+                                    Linear Regression Concepts
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/linearRegression/application">
+                                    Linear Regression Application
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/logisticRegression/concepts">
+                                    Logistic Regression Concepts
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/logisticRegression/application">
+                                    Logistic Regression Application
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/logisticRegression/evaluation">
+                                    Logistic Regression Evaluation
+                                </a>
+                            </li>
+
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/decisionTree/concepts">
+                                    Decision Tree Concepts
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/decisionTree/application">
+                                    Decision Tree Application
+                                </a>
+                            </li>
+
+                            <li>
+                                <a class="dropdown-item" href="/decisionTree/evaluation">
+                                    Decision Tree Evaluation
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+
+    <!-- Hero -->
+    <header class="lr-hero">
+        <div class="container position-relative">
+
+            <span class="lr-eyebrow">
+                Supervised Learning
+            </span>
+
+            <h1 class="lr-hero__title">
+                Logistic Regression: Concepts
+            </h1>
+
+            <p class="lr-hero__subtitle">
+                Understanding how a classification model estimates the probability of a binary outcome
+            </p>
+
+        </div>
+    </header>
+
+
+    <div class="container py-5">
+
+        <!-- What is it -->
+        <div class="lr-card p-4 p-md-5 mb-5">
+
+            <h2 class="mb-3">
+                What is Logistic Regression?
+            </h2>
+
+            <p class="mb-0">
+                Logistic Regression is a supervised Machine Learning algorithm used for
+                <strong style="color: var(--accent-cyan);">
+                    classification problems
+                </strong>.
+                Instead of predicting a continuous numeric value, it estimates the probability
+                that an observation belongs to one of two possible classes.
+                A threshold is then used to convert that probability into a class prediction.
+            </p>
+
+        </div>
+
+
+        <!-- Formula -->
+        <h2 class="lr-section-title mb-4">
+            The Logistic Function
+        </h2>
+
+        <div class="lr-card p-4 p-md-5 mb-5">
+
+            <div class="lr-formula">
+                P(Y = 1) =
+                <span>
+                    1 / (1 + e<sup>-z</sup>)
+                </span>
+            </div>
+
+            <div class="lr-formula-legend">
+
+                <span>
+                    <strong>P(Y = 1)</strong>
+                    — probability of class 1
+                </span>
+
+                <span>
+                    <strong>z</strong>
+                    — weighted combination of the input variables
+                </span>
+
+                <span>
+                    <strong>e</strong>
+                    — mathematical constant used by the logistic function
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <!-- Process -->
+        <h2 class="lr-section-title mb-5">
+            How does it work?
+        </h2>
+
+        <div class="lr-process mb-5">
+
+            <div class="lr-process__step">
+
+                <div class="lr-process__node">
+                    01
+                </div>
+
+                <h5>
+                    Input Data
+                </h5>
+
+                <p>
+                    The model receives numerical features that describe each observation.
+                </p>
+
+            </div>
+
+            <div class="lr-process__connector"></div>
+
+            <div class="lr-process__step">
+
+                <div class="lr-process__node">
+                    02
+                </div>
+
+                <h5>
+                    Probability
+                </h5>
+
+                <p>
+                    The logistic function converts the model output into a probability between 0 and 1.
+                </p>
+
+            </div>
+
+            <div class="lr-process__connector"></div>
+
+            <div class="lr-process__step">
+
+                <div class="lr-process__node">
+                    03
+                </div>
+
+                <h5>
+                    Classification
+                </h5>
+
+                <p>
+                    A threshold is used to assign the observation to class 0 or class 1.
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <!-- Important concepts -->
+        <h2 class="lr-section-title mb-5">
+            Key Concepts
+        </h2>
+
+        <div class="row g-4 mb-5">
+
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+
+                    <i class="bi bi-percent"></i>
+
+                    <h4>
+                        Probability
+                    </h4>
+
+                    <p>
+                        The model estimates how likely an observation is to belong to class 1.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+
+                    <i class="bi bi-signpost-split"></i>
+
+                    <h4>
+                        Decision Threshold
+                    </h4>
+
+                    <p>
+                        A threshold converts the predicted probability into a binary class.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+
+                    <i class="bi bi-toggle-on"></i>
+
+                    <h4>
+                        Binary Output
+                    </h4>
+
+                    <p>
+                        The final prediction is represented as either class 0 or class 1.
+                    </p>
+
+                </div>
+            </div>
+
+
+            <div class="col-md-6 col-lg-3">
+                <div class="lr-feature">
+
+                    <i class="bi bi-graph-up-arrow"></i>
+
+                    <h4>
+                        Classification
+                    </h4>
+
+                    <p>
+                        Logistic Regression is commonly used when the target has two possible outcomes.
+                    </p>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Project example -->
+        <div class="lr-card p-4 p-md-5 mb-5">
+
+            <h2 class="mb-3">
+                Tennis Match Prediction
+            </h2>
+
+            <p>
+                In this project, Logistic Regression is used to predict the winner of a
+                tennis match. The model uses the difference between the players'
+                rankings as its input variable.
+            </p>
+
+            <div class="text-center my-4">
+
+                <span class="lr-chip">
+                    Ranking Difference
+                </span>
+
+                <span class="lr-chip">
+                    Player A Wins = 1
+                </span>
+
+                <span class="lr-chip">
+                    Player A Loses = 0
+                </span>
+
+            </div>
+
+            <p class="mb-0">
+                A positive or negative ranking difference provides information about the
+                relative ranking of the players. The trained model uses this information
+                to estimate the probability that Player A wins.
+            </p>
+
+        </div>
+
+
+        <!-- Dataset -->
+        <div class="lr-card p-4 p-md-5 text-center">
+
+            <h2 class="mb-3">
+                Model in This Project
+            </h2>
+
+            <p>
+                The model was trained using a tennis dataset containing
+                <strong style="color: var(--accent-cyan);">1,200 matches</strong>.
+                The data was divided into training and testing sets using an
+                80/20 split.
+            </p>
+
+            <div class="mt-4">
+
+                <a
+                    href="/logisticRegression/application"
+                    class="lr-btn-primary">
+
+                    Try the Logistic Regression Model
+                    <i class="bi bi-arrow-right"></i>
+
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <footer class="bg-dark text-white text-center py-3">
+        <p class="mb-0">
+            Machine Learning Educational Project
+        </p>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>
