@@ -117,6 +117,9 @@ def logistic_regression_application():
 
     return render_template(
         "logistic-regression-application.html",
+        num_records=tennis_model.get_num_records(),
+        training_records=tennis_model.get_training_records(),
+        testing_records=tennis_model.get_testing_records(),
         prediction=prediction,
         error=error,
         input_ranking_difference=input_ranking_difference

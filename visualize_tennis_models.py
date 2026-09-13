@@ -52,10 +52,21 @@ plt.show()
 
 plt.figure(figsize=(8, 5))
 
+loses = tennis_df[tennis_df["player_a_wins"] == 0]
+wins = tennis_df[tennis_df["player_a_wins"] == 1]
+
 plt.scatter(
-    tennis_df["ranking_difference"],
-    tennis_df["player_a_wins"],
-    alpha=0.35
+    loses["ranking_difference"],
+    loses["player_a_wins"],
+    alpha=0.5,
+    label="Player A loses"
+)
+
+plt.scatter(
+    wins["ranking_difference"],
+    wins["player_a_wins"],
+    alpha=0.5,
+    label="Player A wins"
 )
 
 plt.yticks(
@@ -71,15 +82,16 @@ plt.xlabel(
 
 plt.ylabel("Match outcome")
 
+plt.legend()
+
 plt.tight_layout()
 
 plt.savefig(
-    "ranking_difference.png",
+    "static/ranking_difference.png",
     dpi=300
 )
 
 plt.show()
-
 
 # ============================================================
 # PREPARE DATA FOR LOGISTIC REGRESSION
