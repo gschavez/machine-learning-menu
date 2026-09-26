@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request
-import taxi_model
-import tennis_model
+
+from models import taxi_model
+from models import tennis_model
 
 app = Flask(__name__)
 
@@ -27,6 +28,11 @@ def types():
 @app.route("/use-cases")
 def use_cases():
     return render_template("use-cases-index.html")
+
+
+@app.route("/models")
+def models_index():
+    return render_template("models.html")
 
 
 @app.route("/useCases/usecase1")
@@ -224,6 +230,19 @@ def decision_tree_evaluation():
         "decision-tree-evaluation.html",
         metrics=tennis_model.get_tree_metrics(),
         confusion_matrix=tennis_model.get_tree_confusion_matrix()
+    )
+
+
+# =========================
+# Model Comparison
+# =========================
+
+@app.route("/modelComparison")
+def model_comparison():
+    return render_template(
+        "model-comparison.html",
+        logistic_metrics=tennis_model.get_logistic_metrics(),
+        tree_metrics=tennis_model.get_tree_metrics()
     )
 
 

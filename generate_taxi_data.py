@@ -21,7 +21,3 @@ df.to_csv("data/taxi_data.csv", index=False)
 print("Dataset generated succesfully.")
 print(f"Number of record: {len(df)}")
 print(df.head())
-
-          
-
-
