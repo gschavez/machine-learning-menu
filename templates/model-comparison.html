@@ -1,0 +1,174 @@
+{% extends "base.html" %}
+
+{% block title %}Model Comparison{% endblock %}
+
+{% block extra_head %}
+<style>
+    .mc-hero {
+        background: linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
+        padding: 70px 20px 50px;
+        text-align: center;
+    }
+
+    .mc-hero__title {
+        font-weight: 700;
+        font-size: clamp(2rem, 5vw, 3rem);
+        margin: 10px 0 14px;
+    }
+
+    .mc-hero__subtitle {
+        color: var(--text-muted);
+        max-width: 680px;
+        margin: 0 auto;
+    }
+
+    .mc-card {
+        background: var(--surface-solid);
+        border: 1px solid #ffffff14;
+        border-radius: 18px;
+        padding: 28px;
+    }
+
+    .mc-table th, .mc-table td {
+        color: var(--text-primary);
+        vertical-align: middle;
+    }
+
+    .mc-table thead th {
+        color: var(--accent-cyan);
+        border-bottom: 2px solid #ffffff22;
+    }
+
+    .mc-note {
+        color: var(--text-muted);
+        font-size: 0.95rem;
+    }
+
+    .mc-best {
+        color: var(--accent-cyan);
+        font-weight: 700;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main>
+
+    <!-- Hero -->
+    <section class="mc-hero">
+        <div class="container">
+            <span class="ml-eyebrow">Evaluation</span>
+            <h1 class="mc-hero__title">Model Comparison</h1>
+            <p class="mc-hero__subtitle">
+                Side-by-side comparison of the classification models trained on the
+                tennis match dataset: Logistic Regression and Decision Tree.
+            </p>
+        </div>
+    </section>
+
+    <div class="container my-5">
+
+        <div class="mc-card mb-5">
+            <h2 class="mb-4">Classification metrics</h2>
+
+            <div class="table-responsive">
+                <table class="table table-dark table-borderless mc-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>Logistic Regression</th>
+                            <th>Decision Tree</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Accuracy</td>
+                            <td class="{{ 'mc-best' if logistic_metrics.accuracy >= tree_metrics.accuracy else '' }}">
+                                {{ "%.2f"|format(logistic_metrics.accuracy * 100) }}%
+                            </td>
+                            <td class="{{ 'mc-best' if tree_metrics.accuracy > logistic_metrics.accuracy else '' }}">
+                                {{ "%.2f"|format(tree_metrics.accuracy * 100) }}%
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Precision</td>
+                            <td class="{{ 'mc-best' if logistic_metrics.precision >= tree_metrics.precision else '' }}">
+                                {{ "%.2f"|format(logistic_metrics.precision * 100) }}%
+                            </td>
+                            <td class="{{ 'mc-best' if tree_metrics.precision > logistic_metrics.precision else '' }}">
+                                {{ "%.2f"|format(tree_metrics.precision * 100) }}%
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Recall</td>
+                            <td class="{{ 'mc-best' if logistic_metrics.recall >= tree_metrics.recall else '' }}">
+                                {{ "%.2f"|format(logistic_metrics.recall * 100) }}%
+                            </td>
+                            <td class="{{ 'mc-best' if tree_metrics.recall > logistic_metrics.recall else '' }}">
+                                {{ "%.2f"|format(tree_metrics.recall * 100) }}%
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>F1-score</td>
+                            <td class="{{ 'mc-best' if logistic_metrics.f1 >= tree_metrics.f1 else '' }}">
+                                {{ "%.2f"|format(logistic_metrics.f1 * 100) }}%
+                            </td>
+                            <td class="{{ 'mc-best' if tree_metrics.f1 > logistic_metrics.f1 else '' }}">
+                                {{ "%.2f"|format(tree_metrics.f1 * 100) }}%
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="mc-note mb-0">
+                Both models were trained and evaluated on the same tennis match dataset
+                and test split, so these numbers are directly comparable. The highlighted
+                value in each row marks the higher score between the two models.
+            </p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="mc-card h-100">
+                    <h3 class="h5 mb-3">Logistic Regression</h3>
+                    <p class="mc-note">
+                        Uses a single feature (ranking difference) to estimate the
+                        probability that Player A wins. Simple, fast, and easy to
+                        interpret.
+                    </p>
+                    <a href="/logisticRegression/evaluation" class="text-decoration-none" style="color: var(--accent-cyan);">
+                        View full evaluation <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="mc-card h-100">
+                    <h3 class="h5 mb-3">Decision Tree</h3>
+                    <p class="mc-note">
+                        Uses four features (both players' rankings and recent win
+                        rates) and can capture non-linear relationships between them.
+                    </p>
+                    <a href="/decisionTree/evaluation" class="text-decoration-none" style="color: var(--accent-cyan);">
+                        View full evaluation <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="mc-card mt-4">
+            <h3 class="h5 mb-2">A note on Linear Regression (taxi fare)</h3>
+            <p class="mc-note mb-0">
+                The Linear Regression model predicts a continuous value (taxi fare in
+                dollars), not a class label, so it is evaluated with different metrics
+                (like error in dollars) rather than accuracy/precision/recall. For that
+                reason it isn't included in the table above, which compares
+                classification models only.
+                <a href="/linearRegression/application" style="color: var(--accent-cyan);">See the Linear Regression application</a>.
+            </p>
+        </div>
+
+    </div>
+
+</main>
+{% endblock %}

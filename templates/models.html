@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+
+{% block title %}Machine Learning - Try the Model{% endblock %}
+
+{% block extra_head %}
+<style>
+    .ml-hero {
+        position: relative; overflow: hidden;
+        background: linear-gradient(135deg, var(--grad-1), var(--grad-2), var(--grad-3));
+        padding: 80px 20px 60px; text-align: center;
+    }
+    .ml-eyebrow { font-family: var(--font-mono); font-size: 0.8rem; letter-spacing: 0.2em; color: var(--accent-cyan); text-transform: uppercase; }
+    .ml-hero__title { font-weight: 700; font-size: clamp(2.2rem, 5vw, 3.5rem); margin: 12px 0 16px; }
+    .ml-hero__subtitle { color: var(--text-muted); max-width: 640px; margin: 0 auto; font-size: 1.1rem; }
+
+    .uc-card {
+        background: var(--surface-solid);
+        border: 1px solid #ffffff14;
+        border-radius: 18px;
+        padding: 32px;
+        height: 100%;
+        transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .uc-card:hover { transform: translateY(-4px); border-color: var(--accent-cyan); }
+    .uc-card h3 { color: var(--accent-cyan); font-size: 1.3rem; margin-bottom: 12px; }
+    .uc-card p { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .uc-badge {
+        font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.05em;
+        text-transform: uppercase; color: var(--accent-violet);
+        background: #a78bfa1a; border: 1px solid #a78bfa44;
+        border-radius: 999px; padding: 4px 12px; display: inline-block; margin-bottom: 16px;
+    }
+    .uc-btn {
+        background: var(--accent-cyan); color: var(--bg-deep); font-weight: 500;
+        border: none; padding: 10px 22px; border-radius: 10px; text-decoration: none;
+        display: inline-block; transition: transform 0.15s ease, box-shadow 0.15s ease;
+    }
+    .uc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 24px #22d3ee44; color: var(--bg-deep); }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero -->
+<header class="ml-hero">
+    <div class="container position-relative">
+        <span class="ml-eyebrow">Hands-on</span>
+        <h1 class="ml-hero__title">Try the Model</h1>
+        <p class="ml-hero__subtitle">
+            Choose one of the three trained models below to enter your own
+            values and see a live prediction.
+        </p>
+    </div>
+</header>
+
+<!-- Model cards -->
+<div class="container py-5">
+    <div class="row g-4">
+
+        <div class="col-md-4">
+            <div class="uc-card">
+                <span class="uc-badge">Regression</span>
+                <h3>Linear Regression</h3>
+                <p>Predicts the cost of a taxi ride based on the distance traveled.</p>
+                <a href="/linearRegression/application" class="uc-btn">Try it <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="uc-card">
+                <span class="uc-badge">Classification</span>
+                <h3>Logistic Regression</h3>
+                <p>Predicts the winner of a tennis match based on the ranking difference between two players.</p>
+                <a href="/logisticRegression/application" class="uc-btn">Try it <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="uc-card">
+                <span class="uc-badge">Classification</span>
+                <h3>Decision Tree</h3>
+                <p>Predicts the winner of a tennis match using both players' rankings and recent win rates.</p>
+                <a href="/decisionTree/application" class="uc-btn">Try it <i class="bi bi-arrow-right"></i></a>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center mt-5">
+        <a href="/modelComparison" class="btn btn-outline-light">
+            See how these models compare <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</div>
+{% endblock %}
