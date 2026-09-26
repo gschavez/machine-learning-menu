@@ -1,10 +1,17 @@
+import sys
+import os
+
+# Allow running this script directly (python scripts/visualize_decision_tree.py)
+# by adding the project root to the import path.
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 import matplotlib
 matplotlib.use("Agg")
 
 import matplotlib.pyplot as plt
 from sklearn.tree import plot_tree
 
-import tennis_model
+from models import tennis_model
 
 # 1. DATA VISUALIZATION
 # Player A ranking vs Player B ranking, colored by outcome
