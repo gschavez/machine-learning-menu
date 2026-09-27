@@ -2,6 +2,8 @@ from flask import Flask, render_template, request
 
 from models import taxi_model
 from models import tennis_model
+from models import kmeans_manual
+from models import student_clustering
 
 app = Flask(__name__)
 
@@ -230,6 +232,68 @@ def decision_tree_evaluation():
         "decision-tree-evaluation.html",
         metrics=tennis_model.get_tree_metrics(),
         confusion_matrix=tennis_model.get_tree_confusion_matrix()
+    )
+
+# =========================
+# Activity 3 - Unsupervised Machine Learning (K-Means)
+# =========================
+
+@app.route("/unsupervised/concepts")
+def unsupervised_concepts():
+    return render_template("kmeans-concepts.html")
+
+
+@app.route("/unsupervised/manual-exercise")
+def unsupervised_manual_exercise():
+    iterations = []
+    for step in (1, 2, 3):
+        it = kmeans_manual.get_iteration(step)
+        it["plot"] = kmeans_manual.generate_iteration_plot(step)
+        iterations.append(it)
+
+    return render_template(
+        "kmeans-manual-exercise.html",
+        context=kmeans_manual.get_context(),
+        dataset_preview=kmeans_manual.get_dataset_preview(10),
+        num_records=kmeans_manual.get_num_records(),
+        initial_centroids=kmeans_manual.get_initial_centroids(),
+        initial_plot=kmeans_manual.generate_initial_plot(),
+        iterations=iterations,
+        variance_comparison=kmeans_manual.get_variance_comparison(),
+        variance_plot=kmeans_manual.generate_variance_plot(),
+        interpretation=kmeans_manual.get_interpretation()
+    )
+
+@app.route("/unsupervised/application")
+def unsupervised_application():
+    df, kmeans, centroids_df = student_clustering.train_kmeans()
+
+    cluster_counts = (
+        df["cluster"]
+        .value_counts()
+        .sort_index()
+        .to_dict()
+    )
+
+    centroids = centroids_df.round(2).to_dict(orient="records")
+
+    students = df.to_dict(orient="records")
+
+    silhouette = student_clustering.get_silhouette_score()
+
+    return render_template(
+        "student-clustering.html",
+        students=students,
+        cluster_counts=cluster_counts,
+        centroids=centroids,
+        features=[
+            "Math Score",
+            "Reading Score",
+            "Writing Score"
+        ],
+        n_clusters=kmeans.n_clusters,
+        inertia=round(kmeans.inertia_, 2),
+        silhouette=silhouette
     )
 
 
