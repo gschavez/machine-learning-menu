@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 
 from models import taxi_model
 from models import tennis_model
+from models import kmeans_manual
 
 app = Flask(__name__)
 
@@ -230,6 +231,37 @@ def decision_tree_evaluation():
         "decision-tree-evaluation.html",
         metrics=tennis_model.get_tree_metrics(),
         confusion_matrix=tennis_model.get_tree_confusion_matrix()
+    )
+
+# =========================
+# Activity 3 - Unsupervised Machine Learning (K-Means)
+# =========================
+
+@app.route("/unsupervised/concepts")
+def unsupervised_concepts():
+    return render_template("kmeans-concepts.html")
+
+
+@app.route("/unsupervised/manual-exercise")
+def unsupervised_manual_exercise():
+    iterations = []
+    for step in (1, 2, 3):
+        it = kmeans_manual.get_iteration(step)
+        it["plot"] = kmeans_manual.generate_iteration_plot(step)
+        iterations.append(it)
+
+    return render_template(
+        "kmeans-manual-exercise.html",
+        context=kmeans_manual.get_context(),
+        dataset_preview=kmeans_manual.get_dataset_preview(10),
+        num_records=kmeans_manual.get_num_records(),
+        initial_centroids=kmeans_manual.get_initial_centroids(),
+        initial_plot=kmeans_manual.generate_initial_plot(),
+        iterations=iterations,
+        variance_comparison=kmeans_manual.get_variance_comparison(),
+        variance_plot=kmeans_manual.generate_variance_plot(),
+        interpretation=kmeans_manual.get_interpretation()
+        
     )
 
 

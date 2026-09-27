@@ -1,0 +1,371 @@
+{% extends "base.html" %}
+
+{% block title %}Unsupervised Learning - Concepts{% endblock %}
+
+{% block extra_head %}
+<style>
+body {
+            background: #0f172a;
+            color: #e2e8f0;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .navbar {
+            background: #111827;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #e2e8f0 !important;
+        }
+
+        .nav-link:hover {
+            color: #38bdf8 !important;
+        }
+
+        .hero {
+            padding: 70px 0 40px;
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            color: #94a3b8;
+            max-width: 760px;
+        }
+
+        .panel {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .panel h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .explanation {
+            color: #cbd5e1;
+            line-height: 1.7;
+        }
+
+        .explanation li {
+            margin-bottom: 8px;
+        }
+
+        .code {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .formula {
+            font-family: 'JetBrains Mono', monospace;
+            text-align: center;
+            color: #38bdf8;
+            font-size: 1.05rem;
+        }
+
+        .pill {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 999px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            margin: 4px 6px 4px 0;
+            background: #0f172a;
+            border: 1px solid #334155;
+            color: #94a3b8;
+        }
+
+        .pro {
+            border-left: 3px solid #38bdf8;
+        }
+
+        .con {
+            border-left: 3px solid #f87171;
+        }
+
+        .back-link {
+            color: #38bdf8;
+            text-decoration: none;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <section class="hero">
+        <span class="text-info fw-semibold">
+            UNSUPERVISED LEARNING &middot; CLUSTERING
+        </span>
+
+        <h1 class="display-5 mt-2">
+            K-Means Clustering
+        </h1>
+
+        <p class="subtitle mt-3">
+            Concepts behind unsupervised learning, clustering, and the
+            K-Means algorithm assigned to this group, applied here to
+            segment students by study habits and academic performance.
+        </p>
+    </section>
+
+    <!-- What is unsupervised learning -->
+    <section class="panel mb-4">
+        <h2>
+            <i class="bi bi-search me-2"></i>
+            What is Unsupervised Learning?
+        </h2>
+
+        <div class="explanation">
+            <p>
+                Unsupervised learning is a type of machine learning where
+                the model learns patterns from data that has
+                <strong>no labels or target variable</strong>. Unlike
+                supervised algorithms such as Logistic Regression or
+                Decision Trees, there is no "correct answer" to predict
+                for each record.
+            </p>
+
+            <p class="mb-0">
+                Instead, the goal is to discover hidden structure in the
+                data itself — for example, grouping similar records
+                together — without ever being told in advance what those
+                groups should look like.
+            </p>
+        </div>
+    </section>
+
+    <!-- What is clustering -->
+    <section class="panel mb-4">
+        <h2>
+            <i class="bi bi-bounding-box-circles me-2"></i>
+            What is Clustering?
+        </h2>
+
+        <div class="explanation">
+            <p>
+                Clustering is the most common unsupervised learning task.
+                It groups records so that records in the
+                <strong>same cluster</strong> are more similar to each
+                other than to records in
+                <strong>other clusters</strong>. Similarity between two
+                records is usually measured with the
+                <strong>Euclidean distance</strong> between their
+                numerical variables: the smaller the distance, the more
+                similar the records are.
+            </p>
+
+            <p class="mb-0">
+                K-Means is the most widely used clustering algorithm. The
+                "K" refers to the number of clusters the algorithm must
+                find, which is chosen beforehand.
+            </p>
+        </div>
+    </section>
+
+    <!-- How it works -->
+    <section class="panel mb-4">
+        <h2>
+            <i class="bi bi-gear me-2"></i>
+            How the algorithm works
+        </h2>
+
+        <div class="explanation">
+            <p>
+                K-Means finds clusters by repeatedly assigning points to
+                the nearest center (centroid) and then recalculating
+                those centers, until the assignments stop changing
+                significantly.
+            </p>
+
+            <ol>
+                <li>
+                    <strong>Initialize centroids:</strong> choose K
+                    starting points (one per cluster).
+                </li>
+                <li>
+                    <strong>Assign points:</strong> each record joins the
+                    cluster of its nearest centroid, measured by
+                    Euclidean distance.
+                </li>
+                <li>
+                    <strong>Recompute centroids:</strong> each centroid
+                    moves to the average position (mean) of all the
+                    points assigned to it.
+                </li>
+                <li>
+                    <strong>Repeat</strong> steps 2 and 3 until the
+                    centroids stop moving significantly, or a maximum
+                    number of iterations is reached.
+                </li>
+            </ol>
+
+            <p class="formula mb-0">
+                d = &radic;((x - cx)&sup2; + (y - cy)&sup2;)
+            </p>
+        </div>
+    </section>
+
+    <!-- Types of problems -->
+    <section class="panel mb-4">
+        <h2>
+            <i class="bi bi-diagram-2 me-2"></i>
+            Types of problems it can solve
+        </h2>
+
+        <div class="explanation mb-3">
+            <p class="mb-2">
+                K-Means and clustering in general are versatile and can
+                be used for:
+            </p>
+        </div>
+
+        <span class="pill">Customer / user segmentation</span>
+        <span class="pill">Anomaly detection</span>
+        <span class="pill">Image compression</span>
+        <span class="pill">Document / topic grouping</span>
+
+        <div class="explanation mt-3">
+            <p class="mb-0">
+                In this project, K-Means is used for
+                <strong>student segmentation</strong>: grouping students
+                into three performance segments based on their weekly
+                study hours and final grade.
+            </p>
+        </div>
+    </section>
+
+    <!-- Main characteristics -->
+    <section class="panel mb-4">
+        <h2>
+            <i class="bi bi-list-check me-2"></i>
+            Main characteristics
+        </h2>
+
+        <div class="explanation">
+            <ul class="mb-0">
+                <li>
+                    Requires the number of clusters (K) to be chosen
+                    beforehand, usually through domain knowledge or
+                    methods like the elbow curve or the silhouette score.
+                </li>
+                <li>
+                    Works only with numerical variables, since it relies
+                    on computing distances and averages.
+                </li>
+                <li>
+                    The final result depends on the initial centroids
+                    chosen; different starting points can lead to
+                    different clusters.
+                </li>
+                <li>
+                    Convergence is measured by tracking the
+                    within-cluster variance, which should decrease (or
+                    stabilize) with each iteration.
+                </li>
+            </ul>
+        </div>
+    </section>
+
+    <!-- Advantages / Limitations -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-6">
+            <div class="panel pro h-100">
+                <h2>
+                    <i class="bi bi-hand-thumbs-up me-2"></i>
+                    Advantages
+                </h2>
+
+                <div class="explanation mb-0">
+                    <ul class="mb-0">
+                        <li>Simple to understand and implement.</li>
+                        <li>
+                            Scales well to large datasets compared to
+                            other clustering methods.
+                        </li>
+                        <li>
+                            Produces clusters that are easy to interpret
+                            through their centroid coordinates.
+                        </li>
+                        <li>
+                            Fast to converge in most practical cases.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="panel con h-100">
+                <h2>
+                    <i class="bi bi-hand-thumbs-down me-2"></i>
+                    Limitations
+                </h2>
+
+                <div class="explanation mb-0">
+                    <ul class="mb-0">
+                        <li>
+                            The number of clusters (K) must be chosen in
+                            advance.
+                        </li>
+                        <li>
+                            Sensitive to the initial centroids; a poor
+                            choice can lead to a suboptimal solution.
+                        </li>
+                        <li>
+                            Assumes clusters are roughly round and
+                            similarly sized, which is not always true.
+                        </li>
+                        <li>
+                            Sensitive to the scale of the variables, so
+                            features often need to be normalized first.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Real world example -->
+    <section class="panel mb-5">
+        <h2>
+            <i class="bi bi-globe me-2"></i>
+            Real-world example
+        </h2>
+
+        <div class="explanation mb-0">
+            <p class="mb-0">
+                Retail companies commonly use K-Means to segment
+                customers by income and spending behavior, so they can
+                design targeted marketing campaigns for each group. This
+                project applies the same idea to education: instead of
+                segmenting customers, K-Means groups students by weekly
+                study hours and final grade into at-risk, average, and
+                high-achieving segments, so an instructor could decide
+                where to focus support.
+            </p>
+        </div>
+    </section>
+
+    <div class="mb-5">
+        <a href="/unsupervised/manual-exercise" class="back-link">
+            Continue to the Manual Exercise
+            <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+
+</main>
+{% endblock %}

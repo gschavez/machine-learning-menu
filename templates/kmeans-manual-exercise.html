@@ -1,0 +1,322 @@
+{% extends "base.html" %}
+
+{% block title %}K-Means - Manual Exercise{% endblock %}
+
+{% block extra_head %}
+<style>
+    body {
+        background: #0f172a;
+        color: #e2e8f0;
+        font-family: 'Inter', sans-serif;
+    }
+
+    .navbar { background: #111827; }
+    .navbar-brand, .nav-link { color: #e2e8f0 !important; }
+    .nav-link:hover { color: #38bdf8 !important; }
+
+    .hero { padding: 70px 0 40px; }
+    .hero h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+    .subtitle { color: #94a3b8; max-width: 760px; }
+
+    .panel, .stat-card {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 16px;
+    }
+    .panel { padding: 28px; }
+    .panel h2 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.4rem;
+        margin-bottom: 20px;
+    }
+
+    .stat-card { padding: 18px; text-align: center; }
+    .stat-value {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #38bdf8;
+    }
+    .stat-label { color: #94a3b8; font-size: 0.82rem; }
+
+    .explanation { color: #cbd5e1; line-height: 1.7; }
+    .code { font-family: 'JetBrains Mono', monospace; }
+
+    .class-badge {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+        margin: 4px 4px 0 0;
+        background: #0f172a;
+        border: 1px solid #334155;
+    }
+
+    .chart-wrap {
+        background: #ffffff;
+        border-radius: 14px;
+        padding: 16px;
+        text-align: center;
+    }
+    .chart-wrap img { max-width: 100%; border-radius: 8px; }
+
+    .table-dark-custom {
+        --bs-table-bg: #0f172a;
+        --bs-table-color: #cbd5e1;
+        --bs-table-border-color: #334155;
+        font-size: 0.85rem;
+    }
+    .scroll-table { max-height: 420px; overflow-y: auto; }
+
+    .badge-cluster-1 { background: #38bdf8; }
+    .badge-cluster-2 { background: #a78bfa; }
+    .badge-cluster-3 { background: #f472b6; }
+
+    .nav-pills .nav-link {
+        color: #94a3b8;
+        border: 1px solid #334155;
+        border-radius: 10px;
+        margin-right: 8px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.85rem;
+    }
+    .nav-pills .nav-link.active {
+        background: #38bdf8;
+        color: #0f172a;
+        font-weight: 600;
+    }
+
+    .back-link { color: #38bdf8; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <section class="hero">
+        <span class="text-info fw-semibold">
+            UNSUPERVISED LEARNING &middot; MANUAL EXERCISE
+        </span>
+
+        <h1 class="display-5 mt-2">K-Means Manual Simulation</h1>
+
+        <p class="subtitle mt-3">{{ context.title }}</p>
+    </section>
+
+    <!-- Context -->
+    <section class="panel mb-4">
+        <h2>Dataset Context</h2>
+        <div class="explanation">
+            <p>{{ context.description }}</p>
+            <ul>
+                {% for name, meaning in context.variables %}
+                <li><span class="code">{{ name }}</span> — {{ meaning }}</li>
+                {% endfor %}
+            </ul>
+            <p class="mb-0"><strong>Goal:</strong> {{ context.goal }}</p>
+        </div>
+    </section>
+
+    <!-- Dataset preview -->
+    <section class="panel mb-4">
+        <h2>Dataset Preview</h2>
+
+        <div class="row g-3 mb-3">
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">{{ num_records }}</div>
+                    <div class="stat-label">Total records</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">2</div>
+                    <div class="stat-label">Numerical variables</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Clusters (K)</div>
+                </div>
+            </div>
+            <div class="col-6 col-md-3">
+                <div class="stat-card">
+                    <div class="stat-value">3</div>
+                    <div class="stat-label">Manual iterations</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive scroll-table">
+            <table class="table table-dark-custom table-striped table-sm">
+                <thead>
+                    <tr><th>ID</th><th>Study Hours</th><th>Final Grade</th></tr>
+                </thead>
+                <tbody>
+                {% for row in dataset_preview %}
+                    <tr>
+                        <td>{{ row.ID }}</td>
+                        <td>{{ row.Study_Hours_Weekly }}</td>
+                        <td>{{ row.Final_Grade }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Initial centroids -->
+    <section class="panel mb-4">
+        <h2>Initial Centroids</h2>
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <table class="table table-dark-custom table-sm">
+                    <thead><tr><th>Cluster</th><th>Study Hours</th><th>Final Grade</th></tr></thead>
+                    <tbody>
+                    {% for c in initial_centroids %}
+                        <tr><td>Cluster {{ loop.index }}</td><td>{{ c[0] }}</td><td>{{ c[1] }}</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7">
+                <div class="chart-wrap">
+                    <img src="data:image/png;base64,{{ initial_plot }}" alt="Initial data and centroids">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Iterations -->
+    <section class="panel mb-4">
+        <h2>Iterations</h2>
+        <ul class="nav nav-pills mb-4">
+            {% for it in iterations %}
+            <li class="nav-item">
+                <button class="nav-link {% if loop.first %}active{% endif %}"
+                        data-bs-toggle="pill" data-bs-target="#tab-{{ it.step }}">
+                    Iteration {{ it.step }}
+                </button>
+            </li>
+            {% endfor %}
+        </ul>
+
+        <div class="tab-content">
+        {% for it in iterations %}
+            <div class="tab-pane fade {% if loop.first %}show active{% endif %}" id="tab-{{ it.step }}">
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <h5>Centroids used (input)</h5>
+                        <table class="table table-dark-custom table-sm">
+                            <thead><tr><th>Cluster</th><th>Study Hours</th><th>Final Grade</th></tr></thead>
+                            <tbody>
+                            {% for c in it.centroids_in %}
+                                <tr><td>{{ loop.index }}</td><td>{{ c[0] }}</td><td>{{ c[1] }}</td></tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>New centroids (output)</h5>
+                        <table class="table table-dark-custom table-sm">
+                            <thead><tr><th>Cluster</th><th>Study Hours</th><th>Final Grade</th><th>Count</th><th>Variance</th></tr></thead>
+                            <tbody>
+                            {% for c in it.new_centroids %}
+                                <tr>
+                                    <td>{{ loop.index }}</td>
+                                    <td>{{ "%.2f"|format(c[0]) }}</td>
+                                    <td>{{ "%.2f"|format(c[1]) }}</td>
+                                    <td>{{ it.counts[loop.index0] }}</td>
+                                    <td>{{ it.cluster_variance[loop.index0] }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="table-responsive scroll-table">
+                            <table class="table table-dark-custom table-striped table-sm">
+                                <thead>
+                                    <tr><th>ID</th><th>Hours</th><th>Grade</th><th>D&rarr;C1</th><th>D&rarr;C2</th><th>D&rarr;C3</th><th>Cluster</th></tr>
+                                </thead>
+                                <tbody>
+                                {% for r in it.records %}
+                                    <tr>
+                                        <td>{{ r.ID }}</td><td>{{ r.Hours }}</td><td>{{ r.Grade }}</td>
+                                        <td>{{ r.Dist_C1 }}</td><td>{{ r.Dist_C2 }}</td><td>{{ r.Dist_C3 }}</td>
+                                        <td><span class="badge badge-cluster-{{ r.Cluster }}">{{ r.Cluster }}</span></td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="chart-wrap">
+                            <img src="data:image/png;base64,{{ it.plot }}" alt="Iteration {{ it.step }} clusters">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="stat-card d-inline-block px-4 py-3">
+                    <div class="stat-value">{{ it.total_variance }}</div>
+                    <div class="stat-label">Total within-cluster variance (Iteration {{ it.step }})</div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </section>
+
+    <!-- Variance comparison -->
+    <section class="panel mb-4">
+        <h2>Variance Comparison Across Iterations</h2>
+        <div class="row align-items-center">
+            <div class="col-md-5">
+                <table class="table table-dark-custom table-sm">
+                    <thead><tr><th>Iteration</th><th>Total Variance</th></tr></thead>
+                    <tbody>
+                    {% for v in variance_comparison %}
+                        <tr><td>{{ v.iteration }}</td><td>{{ v.total_variance }}</td></tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-7">
+                <div class="chart-wrap">
+                    <img src="data:image/png;base64,{{ variance_plot }}" alt="Variance across iterations">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interpretation -->
+    <section class="panel mb-4">
+        <h2>Final Interpretation</h2>
+        <div class="explanation">
+            {% for paragraph in interpretation.split('\n\n') %}
+                <p class="{% if loop.last %}mb-0{% endif %}">{{ paragraph }}</p>
+            {% endfor %}
+        </div>
+
+        <div class="mt-3">
+            {% for label in cluster_labels if cluster_labels is defined %}
+                <span class="class-badge">{{ label }}</span>
+            {% endfor %}
+        </div>
+    </section>
+
+    <div class="mb-5">
+        <a href="/unsupervised/concepts" class="back-link">
+            <i class="bi bi-arrow-left me-2"></i> Back to Concepts
+        </a>
+    </div>
+
+</main>
+{% endblock %}
