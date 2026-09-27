@@ -3,6 +3,7 @@ from flask import Flask, render_template, request
 from models import taxi_model
 from models import tennis_model
 from models import kmeans_manual
+from models import student_clustering
 
 app = Flask(__name__)
 
@@ -261,7 +262,38 @@ def unsupervised_manual_exercise():
         variance_comparison=kmeans_manual.get_variance_comparison(),
         variance_plot=kmeans_manual.generate_variance_plot(),
         interpretation=kmeans_manual.get_interpretation()
-        
+    )
+
+@app.route("/unsupervised/application")
+def unsupervised_application():
+    df, kmeans, centroids_df = student_clustering.train_kmeans()
+
+    cluster_counts = (
+        df["cluster"]
+        .value_counts()
+        .sort_index()
+        .to_dict()
+    )
+
+    centroids = centroids_df.round(2).to_dict(orient="records")
+
+    students = df.to_dict(orient="records")
+
+    silhouette = student_clustering.get_silhouette_score()
+
+    return render_template(
+        "student-clustering.html",
+        students=students,
+        cluster_counts=cluster_counts,
+        centroids=centroids,
+        features=[
+            "Math Score",
+            "Reading Score",
+            "Writing Score"
+        ],
+        n_clusters=kmeans.n_clusters,
+        inertia=round(kmeans.inertia_, 2),
+        silhouette=silhouette
     )
 
 
