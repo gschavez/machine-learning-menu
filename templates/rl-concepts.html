@@ -1,0 +1,406 @@
+{% extends "base.html" %}
+
+{% block title %}Reinforcement Learning - Concepts{% endblock %}
+
+{% block extra_head %}
+<style>
+    .hero { padding: 70px 0 40px; }
+    .hero h1 { font-family: 'Space Grotesk', sans-serif; font-weight: 700; }
+    .subtitle { color: #94a3b8; max-width: 760px; }
+
+    .panel {
+        background: #1e293b;
+        border: 1px solid #334155;
+        border-radius: 16px;
+        padding: 28px;
+    }
+    .panel h2 { font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem; margin-bottom: 20px; }
+    .explanation { color: #cbd5e1; line-height: 1.7; }
+    .explanation li { margin-bottom: 8px; }
+
+    .formula {
+        font-family: 'JetBrains Mono', monospace;
+        text-align: center;
+        color: #38bdf8;
+        font-size: 1.05rem;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 12px;
+        padding: 14px;
+        margin: 12px 0;
+    }
+    .pill {
+        display: inline-block;
+        padding: 6px 14px;
+        border-radius: 999px;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 0.8rem;
+        margin: 4px 6px 4px 0;
+        background: #0f172a;
+        border: 1px solid #334155;
+        color: #94a3b8;
+    }
+    .card.panel { color: #e2e8f0; --bs-card-bg: #1e293b; --bs-card-border-color: #334155; }
+    .pro { border-left: 3px solid #38bdf8; }
+    .con { border-left: 3px solid #f87171; }
+    .back-link { color: #38bdf8; text-decoration: none; }
+    .back-link:hover { text-decoration: underline; }
+
+    /* Cycle diagram */
+    .cycle { display: flex; align-items: stretch; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .cycle-box {
+        flex: 1 1 220px;
+        max-width: 300px;
+        background: #0f172a;
+        border: 1px solid #334155;
+        border-radius: 14px;
+        padding: 18px;
+        text-align: center;
+    }
+    .cycle-box i { font-size: 2rem; color: #38bdf8; }
+    .cycle-box h3 { font-size: 1.1rem; margin: 8px 0 6px; }
+    .cycle-box p { color: #94a3b8; font-size: 0.9rem; margin: 0; }
+    .cycle-arrows { flex: 1 1 100%; text-align: center; color: #94a3b8; font-family: 'JetBrains Mono', monospace; font-size: 0.85rem; }
+
+    /* Mini grid legend */
+    .mini-grid { display: inline-grid; grid-template-columns: repeat(5, 38px); gap: 3px; font-family: 'JetBrains Mono', monospace; }
+    .mini-grid span {
+        height: 38px; display: flex; align-items: center; justify-content: center;
+        border-radius: 6px; font-weight: 600; background: #0f172a; border: 1px solid #334155; color: #94a3b8;
+    }
+    .mini-grid .c-A { background: #0e7490; color: #fff; }
+    .mini-grid .c-T { background: #15803d; color: #fff; }
+    .mini-grid .c-wall { background: #475569; color: #e2e8f0; }
+    .mini-grid .c-D { background: #b91c1c; color: #fff; }
+
+    /* Tables and accordion in dark theme */
+    .table-rl { --bs-table-bg: transparent; --bs-table-color: #cbd5e1; --bs-table-border-color: #334155; }
+    .table-rl th { color: #38bdf8; font-family: 'Space Grotesk', sans-serif; }
+    .accordion-rl .accordion-item { background: #1e293b; border: 1px solid #334155; color: #cbd5e1; }
+    .accordion-rl .accordion-button { background: #1e293b; color: #e2e8f0; font-family: 'Space Grotesk', sans-serif; }
+    .accordion-rl .accordion-button:not(.collapsed) { background: #0f172a; color: #38bdf8; box-shadow: none; }
+    .accordion-rl .accordion-button::after { filter: invert(1); }
+    .accordion-rl .accordion-body { line-height: 1.7; }
+    .ex { color: #94a3b8; border-left: 3px solid #38bdf8; padding-left: 12px; margin-top: 10px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="container">
+
+    <section class="hero">
+        <span class="text-info fw-semibold">REINFORCEMENT LEARNING</span>
+        <h1 class="display-5 mt-2">Reinforcement Learning: Concepts</h1>
+        <p class="subtitle mt-3">
+            The ideas you need to understand the exercise: a virtual robot
+            that learns, by trial and error, how to cross a 10 &times; 10
+            maze and reach the target.
+        </p>
+    </section>
+
+    <!-- What is RL -->
+    <section class="card card-body panel mb-4">
+        <h2><i class="bi bi-controller me-2"></i>What is Reinforcement Learning?</h2>
+        <div class="explanation">
+            <p>
+                Reinforcement Learning (RL) is a type of machine learning where
+                an <strong>agent</strong> learns to make decisions by
+                interacting with an <strong>environment</strong>. Nobody gives
+                it the right answer. Instead, after each action it receives a
+                <strong>reward</strong> or a <strong>penalty</strong>, and it
+                slowly learns which actions lead to better results.
+            </p>
+            <p class="mb-0">
+                The goal is to learn a <strong>policy</strong>: a way of
+                choosing actions that maximizes the total reward the agent
+                expects to get. In our exercise, the robot is not told the
+                route. It discovers it by trying, failing and improving.
+            </p>
+        </div>
+
+        <div class="alert alert-info mt-3 mb-0" role="alert">
+            <i class="bi bi-lightbulb me-2"></i>
+            <strong>Compared with other types:</strong> supervised learning
+            learns from labeled examples, unsupervised learning looks for
+            groups in unlabeled data, and RL learns from rewards obtained by
+            acting.
+        </div>
+    </section>
+
+    <!-- Cycle diagram -->
+    <section class="card card-body panel mb-4">
+        <h2><i class="bi bi-arrow-repeat me-2"></i>The agent&ndash;environment cycle</h2>
+        <div class="cycle">
+            <div class="cycle-box">
+                <i class="bi bi-robot"></i>
+                <h3>Agent</h3>
+                <p>The virtual robot. Chooses one action: Up, Down, Left or Right.</p>
+            </div>
+            <div class="cycle-box">
+                <i class="bi bi-grid-3x3-gap"></i>
+                <h3>Environment</h3>
+                <p>The 10 &times; 10 maze and its rules. Decides what happens after each action.</p>
+            </div>
+            <div class="cycle-arrows">
+                Agent &rarr; <strong>action</strong> &rarr; Environment &rarr;
+                <strong>new state + reward</strong> &rarr; Agent
+            </div>
+        </div>
+        <p class="explanation mt-3 mb-0">
+            This loop repeats again and again. With each turn, the agent has a
+            new experience to learn from.
+        </p>
+    </section>
+
+    <!-- Elements table -->
+    <section class="card card-body panel mb-4">
+        <h2><i class="bi bi-table me-2"></i>Basic elements in our exercise</h2>
+
+        <div class="table-responsive">
+            <table class="table table-rl align-middle">
+                <thead>
+                    <tr>
+                        <th>Concept</th>
+                        <th>General idea</th>
+                        <th>In our maze</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><i class="bi bi-robot me-2"></i><strong>Agent</strong></td>
+                        <td>The one who learns and decides.</td>
+                        <td>The virtual robot that starts at <code>A</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-grid-3x3-gap me-2"></i><strong>Environment</strong></td>
+                        <td>Everything the agent interacts with.</td>
+                        <td>The 10 &times; 10 grid with walls <code>#</code>, danger zones <code>D</code> and free cells <code>o</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-geo-alt me-2"></i><strong>State</strong></td>
+                        <td>The situation the agent is in right now.</td>
+                        <td>The current position as (row, column), for example (0,0).</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-arrows-move me-2"></i><strong>Action</strong></td>
+                        <td>What the agent can do.</td>
+                        <td>Up, Down, Left, Right.</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-plus-circle me-2"></i><strong>Reward</strong></td>
+                        <td>A positive signal for a good result.</td>
+                        <td>A big positive value for reaching the target <code>T</code>.</td>
+                    </tr>
+                    <tr>
+                        <td><i class="bi bi-dash-circle me-2"></i><strong>Penalty</strong></td>
+                        <td>A negative reward for a bad result.</td>
+                        <td>Hitting a wall, an invalid move, or stepping on a danger zone <code>D</code>.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="text-center mt-3">
+            <div class="mini-grid" aria-label="Example of the maze characters">
+                <span class="c-A">A</span><span>o</span><span class="c-wall">#</span><span>o</span><span>o</span>
+                <span>o</span><span class="c-D">D</span><span class="c-wall">#</span><span>o</span><span>o</span>
+                <span>o</span><span>o</span><span>o</span><span class="c-D">D</span><span>o</span>
+                <span class="c-wall">#</span><span>o</span><span class="c-wall">#</span><span>o</span><span>o</span>
+                <span>o</span><span>o</span><span>o</span><span>o</span><span class="c-T">T</span>
+            </div>
+            <p class="small text-secondary mt-2 mb-0">
+                Small example only. The real maze is 10 &times; 10 and is shown on the Application page.
+            </p>
+        </div>
+    </section>
+
+    <!-- Accordion with the rest of the concepts -->
+    <section class="mb-4">
+        <h2 class="h4 mb-3"><i class="bi bi-journal-text me-2"></i>Key concepts, one by one</h2>
+
+        <div class="accordion accordion-rl" id="rlAccordion">
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#c1" aria-expanded="true" aria-controls="c1">
+                        Policy
+                    </button>
+                </h3>
+                <div id="c1" class="accordion-collapse collapse show" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        The policy is the rule that tells the agent which action to take in each state.
+                        <div class="ex">Example: in cell (0,0) the best action may be Right; in (0,1) it may be Down. The full set of those choices is the policy the robot learns.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c2" aria-expanded="false" aria-controls="c2">
+                        Step, episode and experience
+                    </button>
+                </h3>
+                <div id="c2" class="accordion-collapse collapse" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        <ul class="mb-0">
+                            <li><strong>Step:</strong> one action and its result. The robot moves once.</li>
+                            <li><strong>Episode:</strong> a full attempt, from the start <code>A</code> until the robot reaches <code>T</code> or runs out of allowed steps.</li>
+                            <li><strong>Experience:</strong> what is learned from one step: (state, action, reward, next state).</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c3" aria-expanded="false" aria-controls="c3">
+                        Immediate reward and return
+                    </button>
+                </h3>
+                <div id="c3" class="accordion-collapse collapse" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        The <strong>immediate reward</strong> is what the robot gets right after one action. The
+                        <strong>return</strong> is the sum of all the rewards it will get from now on, with future rewards counting a bit less.
+                        <div class="formula">G = r<sub>1</sub> + &gamma;&middot;r<sub>2</sub> + &gamma;&sup2;&middot;r<sub>3</sub> + ...</div>
+                        <div class="ex">A move that gives -1 now but leads toward the target can be better than a move that gives 0 now but leads into a danger zone.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c4" aria-expanded="false" aria-controls="c4">
+                        Discount factor (&gamma;)
+                    </button>
+                </h3>
+                <div id="c4" class="accordion-collapse collapse" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        A number between 0 and 1 that says how much the agent cares about future rewards.
+                        Close to 0, the robot only thinks about the next step. Close to 1, it plans for the long run.
+                        <div class="ex">The class exercise used &gamma; = 0.95, so the reward at the target still matters even from far away.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c5" aria-expanded="false" aria-controls="c5">
+                        State value V(s) and action value Q(s,a)
+                    </button>
+                </h3>
+                <div id="c5" class="accordion-collapse collapse" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        <ul>
+                            <li><strong>V(s):</strong> how good it is to be in a state, assuming the agent keeps following its policy.</li>
+                            <li><strong>Q(s,a):</strong> how good it is to take action <em>a</em> while in state <em>s</em>.</li>
+                        </ul>
+                        <div class="formula">V(s) = max<sub>a</sub> Q(s,a)</div>
+                        <div class="ex">For each cell, the Application page shows four Q-values: Up, Down, Left and Right. The agent picks the action with the highest one.</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="accordion-item">
+                <h3 class="accordion-header">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#c6" aria-expanded="false" aria-controls="c6">
+                        Q-Learning
+                    </button>
+                </h3>
+                <div id="c6" class="accordion-collapse collapse" data-bs-parent="#rlAccordion">
+                    <div class="accordion-body">
+                        Q-Learning is the algorithm used in this exercise. After each step, the agent corrects its estimate of Q(s,a) using what it just observed:
+                        <div class="formula">Q(s,a) &larr; r + &gamma; &middot; max<sub>a'</sub> Q(s',a')</div>
+                        <p class="mb-0">
+                            Here <em>r</em> is the reward and <em>s'</em> is the next state. In the class exercise, Q(s,a)
+                            is estimated with an <code>SGDRegressor</code>: <code>predict()</code> gives the Q-values and
+                            <code>partial_fit()</code> updates the model with every new transition.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Exploration / exploitation -->
+    <div class="row g-4 mb-4">
+        <div class="col-md-6">
+            <div class="card card-body panel pro h-100">
+                <h2><i class="bi bi-compass me-2"></i>Exploration</h2>
+                <div class="explanation">
+                    <p class="mb-0">
+                        The robot chooses a random action to discover the maze. It may bump into a wall, but it
+                        finds out things it did not know yet.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card card-body panel pro h-100">
+                <h2><i class="bi bi-trophy me-2"></i>Exploitation</h2>
+                <div class="explanation">
+                    <p class="mb-0">
+                        The robot chooses the action with the best Q-value it knows so far. It uses what it has already learned.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="card card-body panel mb-4">
+        <h2><i class="bi bi-dice-5 me-2"></i>Epsilon-Greedy strategy</h2>
+        <div class="explanation">
+            <p>
+                To balance both ideas, the agent uses a number &epsilon; (epsilon). At each step:
+            </p>
+            <ul>
+                <li>With probability <strong>&epsilon;</strong> it explores (random action).</li>
+                <li>With probability <strong>1 &minus; &epsilon;</strong> it exploits (best Q-value).</li>
+            </ul>
+            <p class="mb-2">
+                Training starts with &epsilon; high (the class exercise used 1.0) so the robot explores a lot, and
+                &epsilon; decreases little by little until it reaches a minimum. This is the
+                <strong>epsilon decay</strong>.
+            </p>
+            <span class="pill">initial &epsilon;</span>
+            <span class="pill">minimum &epsilon;</span>
+            <span class="pill">&epsilon; decay</span>
+            <span class="pill">&gamma;</span>
+            <span class="pill">training episodes</span>
+        </div>
+        <div class="alert alert-warning mt-3 mb-0" role="alert">
+            <i class="bi bi-exclamation-triangle me-2"></i>
+            Too little exploration and the robot may settle for a bad route. Too much and it never uses what it learned.
+        </div>
+    </section>
+
+    <!-- Rewards example -->
+    <section class="card card-body panel mb-5">
+        <h2><i class="bi bi-award me-2"></i>How rewards guide the robot</h2>
+        <div class="table-responsive">
+            <table class="table table-rl align-middle mb-0">
+                <thead>
+                    <tr><th>Situation</th><th>Type</th><th>Effect on learning</th></tr>
+                </thead>
+                <tbody>
+                    <tr><td>Move to a normal cell <code>o</code></td><td>Small penalty</td><td>Pushes the robot to find short routes.</td></tr>
+                    <tr><td>Invalid move or wall <code>#</code></td><td>Penalty</td><td>The robot learns not to waste steps.</td></tr>
+                    <tr><td>Danger zone <code>D</code></td><td>Bigger penalty</td><td>The robot learns to go around it when possible.</td></tr>
+                    <tr><td>Target <code>T</code></td><td>Big reward</td><td>Marks the goal the whole route leads to.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="small text-secondary mt-3 mb-0">
+            The exact reward values are defined and shown on the Application page.
+        </p>
+    </section>
+
+    <div class="mb-5">
+        <a href="/reinforcement/application" class="back-link">
+            Continue to the Application
+            <i class="bi bi-arrow-right ms-2"></i>
+        </a>
+    </div>
+
+</main>
+{% endblock %}

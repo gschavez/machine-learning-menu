@@ -1,0 +1,18 @@
+{# Needs: evaluation_steps (list of dicts: step, state, action, next_state, cell_type, reward) #}
+<section class="card card-body panel">
+    <h2><i class="bi bi-list-ol me-2"></i>Step-by-step evaluation (no exploration)</h2>
+    <div class="table-responsive">
+        <table class="table table-rl table-sm align-middle mb-0">
+            <thead><tr><th>Step</th><th>State</th><th>Action</th><th>Next State</th><th>Cell Type</th><th>Reward</th></tr></thead>
+            <tbody>
+                {% for s in evaluation_steps %}
+                <tr>
+                    <td>{{ s.step }}</td><td>{{ s.state }}</td><td>{{ s.action }}</td>
+                    <td>{{ s.next_state }}</td><td>{{ s.cell_type }}</td>
+                    <td class="{{ 'q-best' if s.reward > 0 else 'q-neg' }}">{{ s.reward }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

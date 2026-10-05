@@ -5,6 +5,9 @@ from models import tennis_model
 from models import kmeans_manual
 from models import student_clustering
 
+import rl_agent
+import rl_environment as rl_env
+
 app = Flask(__name__)
 
 
@@ -309,6 +312,60 @@ def model_comparison():
         tree_metrics=tennis_model.get_tree_metrics()
     )
 
+# Reinforcement Learning routes
+@app.route("/rl-concepts")
+def rl_concepts():
+    return render_template("rl-concepts.html")
+
+
+@app.route("/rl-application", methods=["GET", "POST"])
+def rl_application():
+    data = None
+
+    if request.method == "POST":
+        data = rl_agent.run_training()
+
+    return render_template(
+        "rl-application.html",
+        grid=rl_env.GRID,
+        path=data["path"] if data else [],
+        results=data["results"] if data else None,
+        evaluation_steps=data["evaluation_steps"] if data else [],
+        q_values=data["q_values"] if data else [],
+        params=data["params"] if data else rl_agent.get_params(),
+        rewards=[
+            {
+                "situation": "Normal movement",
+                "cell": "o",
+                "value": rl_env.NORMAL_REWARD,
+                "effect": "Small penalty that encourages the agent to reach the goal efficiently."
+            },
+            {
+                "situation": "Invalid movement",
+                "cell": "Outside grid",
+                "value": rl_env.INVALID_MOVE_REWARD,
+                "effect": "Penalizes actions that try to leave the environment."
+            },
+            {
+                "situation": "Wall collision",
+                "cell": "#",
+                "value": rl_env.WALL_REWARD,
+                "effect": "Strong penalty for trying to move into an obstacle."
+            },
+            {
+                "situation": "Danger zone",
+                "cell": "D",
+                "value": rl_env.DANGER_REWARD,
+                "effect": "Penalizes entering a dangerous cell."
+            },
+            {
+                "situation": "Goal reached",
+                "cell": "T",
+                "value": rl_env.GOAL_REWARD,
+                "effect": "Large positive reward for reaching the target."
+            }
+        ]
+    )
 
 if __name__ == "__main__":
     app.run(debug=True)
