@@ -1,0 +1,16 @@
+{# Needs: params (dict: initial_epsilon, min_epsilon, epsilon_decay, gamma, episodes) #}
+<section class="card card-body panel">
+    <h2><i class="bi bi-sliders me-2"></i>Training parameters</h2>
+    <div class="table-responsive">
+        <table class="table table-rl align-middle mb-0">
+            <thead><tr><th>Parameter</th><th>Value</th><th>Purpose</th></tr></thead>
+            <tbody>
+                <tr><td>Initial epsilon (&epsilon;)</td><td>{{ params.initial_epsilon }}</td><td>Starting chance of exploring with a random action.</td></tr>
+                <tr><td>Minimum epsilon</td><td>{{ params.min_epsilon }}</td><td>Lowest exploration level, so the agent never stops exploring completely.</td></tr>
+                <tr><td>Epsilon decay</td><td>{{ params.epsilon_decay }}</td><td>Factor that lowers &epsilon; after each episode.</td></tr>
+                <tr><td>Discount factor (&gamma;)</td><td>{{ params.gamma }}</td><td>How much the agent values future rewards.</td></tr>
+                <tr><td>Training episodes</td><td>{{ params.episodes }}</td><td>Number of full attempts the agent practices.</td></tr>
+            </tbody>
+        </table>
+    </div>
+</section>

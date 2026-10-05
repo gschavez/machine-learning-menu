@@ -1,0 +1,22 @@
+{# Needs: q_values (list of dicts: state, up, down, left, right). Best action per state is highlighted. #}
+<section class="card card-body panel">
+    <h2><i class="bi bi-calculator me-2"></i>Learned Q-values</h2>
+    <p class="explanation">For each state the agent chooses the action with the highest Q-value (in green).</p>
+    <div class="table-responsive" style="max-height:480px;overflow-y:auto">
+        <table class="table table-rl table-sm align-middle mb-0">
+            <thead><tr><th>State</th><th>Up</th><th>Down</th><th>Left</th><th>Right</th></tr></thead>
+            <tbody>
+                {% for q in q_values %}
+                {% set best = [q.up, q.down, q.left, q.right]|max %}
+                <tr>
+                    <td>{{ q.state }}</td>
+                    <td class="{{ 'q-best' if q.up == best }}">{{ q.up }}</td>
+                    <td class="{{ 'q-best' if q.down == best }}">{{ q.down }}</td>
+                    <td class="{{ 'q-best' if q.left == best }}">{{ q.left }}</td>
+                    <td class="{{ 'q-best' if q.right == best }}">{{ q.right }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>

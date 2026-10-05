@@ -1,0 +1,9 @@
+{# Needs: grid (list of 10 strings) and path (list of [row, col] lists) #}
+<div class="text-center">
+    <div class="rl-grid" style="--cols: {{ grid[0]|length }}" aria-label="Environment grid">
+        {% for row in grid %}{% set r = loop.index0 %}{% for ch in row %}{% set c = loop.index0 %}
+        <div class="rl-cell cell-{{ 'wall' if ch == '#' else ch }}{% if [r, c] in path %} on-path{% endif %}" title="({{ r }},{{ c }})">{{ ch }}</div>
+        {% endfor %}{% endfor %}
+    </div>
+    <p class="small text-secondary mt-2 mb-0">Yellow outline = cells of the path followed by the trained agent.</p>
+</div>

@@ -1,0 +1,19 @@
+{# Needs: rewards (list of dicts: situation, cell, value, effect) #}
+<section class="card card-body panel">
+    <h2><i class="bi bi-award me-2"></i>Reward system</h2>
+    <div class="table-responsive">
+        <table class="table table-rl align-middle mb-0">
+            <thead><tr><th>Situation</th><th>Cell</th><th>Reward</th><th>Why</th></tr></thead>
+            <tbody>
+                {% for r in rewards %}
+                <tr>
+                    <td>{{ r.situation }}</td>
+                    <td><code>{{ r.cell }}</code></td>
+                    <td class="{{ 'q-best' if r.value > 0 else 'q-neg' }}">{{ r.value }}</td>
+                    <td>{{ r.effect }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</section>
